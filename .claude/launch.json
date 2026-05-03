@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "static_site/demo.casethemes.net/archcraft", "-l", "3000", "--no-clipboard"],
+      "port": 3000
+    }
+  ]
+}
