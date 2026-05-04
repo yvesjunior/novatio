@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+# Playwright transient artifacts (NOT __screenshots__/ — those are baselines and must be committed)
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # next.js
 /.next/
