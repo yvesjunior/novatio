@@ -24,24 +24,33 @@ If you're considering a change that would alter pixels, **stop and ask first**.
 
 ## Architecture
 
+The Next.js app's "project root" is `src/` — `package.json`, `node_modules/`, all configs, and all source live there. The repo root holds only `infra/` (Dockerfile), `docker-compose.yml`, `.env`, and `src/`. **All paths below are relative to `src/`** unless otherwise noted.
+
 ```
-src/app/
-  [[...slug]]/route.ts      ← the only "real" code: catch-all GET/POST handler
-  layout.tsx                ← minimal <html><body> wrapper
-  globals.css               ← single @import "tailwindcss"
-scripts/
-  build-partials.mjs        ← stamps partials into HTML at build time
-public/
-  wp-content                ← symlink → ../static_site/archcraft/wp-content
-static_site/archcraft/
-  partials/{header,footer}.html   ← single source of truth for shared chrome
-  home-two/index.html             ← served at /
-  about-us/, contact-us/, ...     ← 26 routable pages, one per dir
-  wp-content/                     ← Elementor + plugin + theme CSS / JS / uploads
-  wp-includes/                    ← WordPress core JS (jQuery, etc.)
-tests/
-  visual.spec.ts            ← 6 routes × 3 viewports = 18 baseline screenshots
-playwright.config.ts        ← chromium, port 3001, 0.5% pixel-diff tolerance
+<repo-root>/
+├── docker-compose.yml         compose orchestrates the web service
+├── .env                       WEB_PORT, lead-notification keys, etc.
+├── infra/web/Dockerfile       multi-stage Node 22 alpine build
+└── src/                       app root
+    ├── app/
+    │   ├── [[...slug]]/route.ts    ← the only "real" code: catch-all GET/POST handler
+    │   ├── api/lead/route.ts       ← lead-qualification POST endpoint
+    │   ├── layout.tsx              ← minimal <html><body> wrapper
+    │   └── globals.css             ← single @import "tailwindcss"
+    ├── scripts/
+    │   └── build-partials.mjs      ← stamps partials into HTML at build time
+    ├── public/
+    │   ├── chatbot.js              ← floating lead-qual widget
+    │   └── wp-content              ← symlink → ../static_site/archcraft/wp-content
+    ├── static_site/archcraft/
+    │   ├── partials/{header,footer}.html   ← single source of truth for shared chrome
+    │   ├── home-two/index.html             ← served at /
+    │   ├── about-us/, contact-us/, ...     ← 26 routable pages, one per dir
+    │   ├── wp-content/                     ← Elementor + plugin + theme CSS / JS / uploads
+    │   └── wp-includes/                    ← WordPress core JS (jQuery, etc.)
+    ├── tests/
+    │   └── visual.spec.ts          ← 6 routes × 3 viewports = 18 baseline screenshots
+    └── playwright.config.ts        ← chromium, port 3001, 0.5% pixel-diff tolerance
 ```
 
 **Request flow:**
@@ -57,10 +66,24 @@ playwright.config.ts        ← chromium, port 3001, 0.5% pixel-diff tolerance
 
 ### Run the project
 
+**Local (host)** — npm/Node have to be invoked from `src/`:
+
 ```bash
-npm install
+cd src
+npm install          # first time only
 npm run dev          # Next.js on :3000 (predev re-stamps partials)
 ```
+
+**Docker (production-style)** — run from the repo root:
+
+```bash
+docker compose up -d --build
+# App on http://localhost:${WEB_PORT}/  (default WEB_PORT=3001 from .env)
+docker compose logs -f web
+docker compose down
+```
+
+The Dockerfile is at [`infra/web/Dockerfile`](../infra/web/Dockerfile); compose context is the repo root, so it can `COPY src/`. Env vars come from the root `.env` via `env_file:` (compose injects them at runtime — they're never baked into the image).
 
 Don't bother spinning up a separate static reference server — there is no separate reference anymore. Next serves the same HTML. If you need to compare against the live demo, open <https://demo.casethemes.net/archcraft/> in another tab.
 
@@ -143,7 +166,7 @@ A floating chat widget on every page. Source of truth:
 
 To add a new question, edit the `FLOW` array in `chatbot.js`. To change classification rules, edit the `classify()` function. To add a notification channel (Slack, Resend, generic webhook are already there), copy one of the existing `notifyX` functions in `route.ts`.
 
-When testing the bot, leads land in `leads.json` at the repo root (gitignored). Delete that file between test runs to start fresh.
+When testing the bot, leads land in `leads.json` next to wherever the Node process runs from — `src/leads.json` for local dev, `/app/leads.json` inside the container (gitignored either way). Delete that file between test runs to start fresh.
 
 ## Stubbed endpoints
 

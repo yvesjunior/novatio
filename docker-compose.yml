@@ -10,4 +10,6 @@ services:
     env_file: .env
     ports:
       - "${WEB_PORT:-3000}:3000"
+    volumes:
+      - ./src/static_site:/app/static_site
     restart: unless-stopped
