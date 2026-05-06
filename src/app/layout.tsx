@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ArchCraft - Architecture & Interior Design",
+  title: "Novatio - Architecture & Interior Design",
   description:
     "We craft architectural designs that blend creativity, functionality, and innovation to shape modern, timeless spaces.",
 };

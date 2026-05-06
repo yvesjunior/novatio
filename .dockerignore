@@ -1,0 +1,34 @@
+# vcs
+.git
+.gitignore
+
+# node / next build artifacts (rebuilt inside the image)
+**/node_modules
+**/.next
+**/tsconfig.tsbuildinfo
+
+# OS junk
+**/.DS_Store
+
+# tests + reports (not shipped in production image)
+**/tests
+**/playwright.config.ts
+**/playwright-report
+**/test-results
+
+# secrets / env files (compose injects env at runtime via env_file)
+**/.env
+**/.env.*
+!**/.env.example
+
+# editor / docs / compose
+**/.claude
+**/CLAUDE.md
+**/README.md
+docker-compose.yml
+
+# runtime state
+**/leads.json
+
+# stray junk
+**/from preloaded import *.py

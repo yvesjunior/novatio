@@ -1,0 +1,6 @@
+{
+  "/[[...slug]]/route": "/[[...slug]]",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/lead/route": "/api/lead"
+}

@@ -1,0 +1,13 @@
+name: nanopods-house
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: infra/web/Dockerfile
+    image: nanopods-house-web:latest
+    container_name: nanopods-house-web
+    env_file: .env
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    restart: unless-stopped
