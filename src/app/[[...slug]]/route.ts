@@ -9,9 +9,8 @@ import type { NextRequest } from "next/server";
  * verbatim. Visual output is identical to the legacy site because the markup
  * is identical.
  *
- *   /                 → static_site/archcraft/home-two/index.html
+ *   /                 → static_site/archcraft/home/index.html
  *   /about-us/        → static_site/archcraft/about-us/index.html
- *   /blog-grid/       → static_site/archcraft/blog-grid/index.html
  *   /partials/footer.html → static_site/archcraft/partials/footer.html (raw passthrough)
  *
  * Static assets under /wp-content/* are served by Next via the public/wp-content
@@ -28,7 +27,7 @@ async function resolveStaticFile(slug: string[]): Promise<string | null> {
   const reqPath = slug.length === 0 ? "" : slug.join("/");
 
   if (reqPath === "") {
-    return path.join(STATIC_ROOT, "home-two", "index.html");
+    return path.join(STATIC_ROOT, "home", "index.html");
   }
 
   const direct = path.join(STATIC_ROOT, reqPath);
