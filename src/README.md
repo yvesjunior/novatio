@@ -39,8 +39,8 @@ npm run dev          # http://localhost:3000
     ├── scripts/build-partials.mjs  inlines shared header/footer into every HTML page
     ├── static_site/archcraft/
     │   ├── partials/{header,footer}.html   single source of truth for shared chrome
-    │   ├── home-two/                       → /
-    │   ├── about-us/, contact-us/, ...     → matching URLs (26 pages)
+    │   ├── home/                           → /  (renamed from `home-two/`)
+    │   ├── about-us/, contact-us/, ...     → matching URLs (9 pages)
     │   └── wp-content/                     Elementor / plugin / theme CSS / JS / uploads
     ├── tests/visual.spec.ts        Playwright visual regression
     └── playwright.config.ts        chromium, port 3001

@@ -44,8 +44,12 @@ The Next.js app's "project root" is `src/` — `package.json`, `node_modules/`, 
     │   └── wp-content              ← symlink → ../static_site/archcraft/wp-content
     ├── static_site/archcraft/
     │   ├── partials/{header,footer}.html   ← single source of truth for shared chrome
-    │   ├── home-two/index.html             ← served at /
-    │   ├── about-us/, contact-us/, ...     ← 26 routable pages, one per dir
+    │   ├── home/index.html                 ← served at / (renamed from `home-two/`)
+    │   ├── about-us/, contact-us/, ...     ← 9 routable pages, one per dir
+    │   │   (404, about-us, contact-us, faq, gallery, home, portfolio, product, services)
+    │   ├── portfolio/                       ← portfolio listing page
+    │   │   ├── crafted-with-passion/       ← single-project detail (Single Project menu target)
+    │   │   └── modern-residential-villa/
     │   ├── wp-content/                     ← Elementor + plugin + theme CSS / JS / uploads
     │   └── wp-includes/                    ← WordPress core JS (jQuery, etc.)
     ├── tests/
@@ -85,6 +89,8 @@ docker compose down
 
 The Dockerfile is at [`infra/web/Dockerfile`](../infra/web/Dockerfile); compose context is the repo root, so it can `COPY src/`. Env vars come from the root `.env` via `env_file:` (compose injects them at runtime — they're never baked into the image).
 
+> **Live-mount gotcha:** only `src/static_site` is volume-mounted into the running container. App code (`app/`, `route.ts`, etc.) is baked into the image at build time. So edits under `static_site/` are live, but **editing `route.ts` or anything outside `static_site/` requires `docker compose up -d --build` to take effect.** Symptom of skipping the rebuild: `/` returns 500 because the old route handler tries to read a path that's been renamed on disk.
+
 Don't bother spinning up a separate static reference server — there is no separate reference anymore. Next serves the same HTML. If you need to compare against the live demo, open <https://demo.casethemes.net/archcraft/> in another tab.
 
 ### Edit shared header / footer
@@ -94,9 +100,9 @@ static_site/archcraft/partials/header.html
 static_site/archcraft/partials/footer.html
 ```
 
-These are the source of truth. After editing, `npm run build:partials` stamps them into all 26 HTML pages (also auto-runs via `npm run dev` and `npm run build`). The script is idempotent — wraps inlined content in `<!-- partial:NAME -->...<!-- /partial:NAME -->` so re-runs swap the latest content.
+These are the source of truth. After editing, `npm run build:partials` stamps them into all routable HTML pages (also auto-runs via `npm run dev` and `npm run build`). The script is idempotent — wraps inlined content in `<!-- partial:NAME -->...<!-- /partial:NAME -->` so re-runs swap the latest content.
 
-> The home page's `<header>` is intentionally NOT a partial — it's a unique transparent variant only used on `/`. The footer IS a partial everywhere including the home page.
+> The home page's `<header>` is intentionally NOT a partial — it's a unique transparent variant only used on `/` (lives directly inside [`home/index.html`](static_site/archcraft/home/index.html)). The footer IS a partial everywhere including the home page. The home page also has its own embedded copies of the menu markup that the partial doesn't touch — when you change the nav menu, you typically need to apply the same change in `home/index.html` manually (or via a separate regex pass).
 
 ### Edit a single page
 
@@ -130,6 +136,28 @@ When a single route genuinely needs interactivity that the legacy markup can't d
 4. Update the relevant Playwright baseline.
 
 Don't graduate routes preemptively. Don't graduate "to clean things up". Wait for a real reason.
+
+---
+
+## Current navigation
+
+The header menu has been trimmed down from the original Archcraft demo. Current state:
+
+- Home → `/`
+- Pages → `#` (dropdown)
+  - About Us → `/about-us/`
+  - Gallery → `/gallery/`
+  - FAQs → `/faq/`
+  - 404 Error → `/404`
+- Services → `/services/`
+- Portfolio → `/portfolio/`
+- Contact Us → `/contact-us/`
+
+What was removed from the original menu (and don't re-add unless asked): "Pricing Plan", "Our Team", "Projects" (with Projects 01/02/Single Project subtree), "Shop" (with Wishlist/Cart/Checkout/My account subtree), and "Blog" (replaced by Portfolio). Several of those WP slugs (`pricing-plan`, `our-team`, `team-single`, `projects-01`, `projects-02`, `shop`, `wishlist`, `cart`, `checkout`, `my-account`, `product/premium-velvet-accent-chair`, `blog`, `blog-grid`) are also gone from disk. The footer "Our Blog" link was repointed to "Portfolio".
+
+The Portfolio page is a copy of the legacy Blog Grid layout (the "Blog Grid" labels were renamed to "Portfolio"). The portfolio item cards on `/portfolio/` all link to the existing `/portfolio/crafted-with-passion/` detail page.
+
+When changing the nav menu, edit [`partials/header.html`](static_site/archcraft/partials/header.html) and also apply the same change in [`home/index.html`](static_site/archcraft/home/index.html) (which carries its own embedded menu copies — the partial doesn't touch the home page header).
 
 ---
 

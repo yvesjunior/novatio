@@ -13,7 +13,7 @@ const ROUTES = [
   "/",
   "/about-us/",
   "/contact-us/",
-  "/blog-grid/",
+  "/portfolio/",
   "/services/",
   "/faq/",
 ] as const;
