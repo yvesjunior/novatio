@@ -12,4 +12,5 @@ services:
       - "${WEB_PORT:-3000}:3000"
     volumes:
       - ./src/static_site:/app/static_site
+      - ./src/i18n:/app/i18n
     restart: unless-stopped
