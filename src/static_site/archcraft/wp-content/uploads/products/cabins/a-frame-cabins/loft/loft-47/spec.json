@@ -1,0 +1,100 @@
+{
+  "sku": "loft-47",
+  "name": "Loft 47",
+  "status": "draft",
+  "taxonomy": {
+    "category": "cabins",
+    "sub_category": "a-frame-cabins",
+    "series": "loft"
+  },
+  "summary": {
+    "tagline": "47 m² A-frame cabin with full-height loft and front terrace",
+    "description": "A wood-clad A-frame with a steeply pitched roof, mezzanine bedroom,\nand a generous south-facing terrace. Ships as parts in a 20' container\nand assembles on-site in 3 days to a week — ideal for mountain plots,\nlakeside cottages, and design-forward glamping resorts.\n"
+  },
+  "dimensions": {
+    "length_m": 5.95,
+    "width_m": 5.0,
+    "height_m": 5.0,
+    "floor_area_m2": 47,
+    "floor_area_ft2": 506,
+    "weight_kg": null,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "2-4",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "layouts_available": [
+      "loft + open downstairs",
+      "loft + 1BR downstairs"
+    ]
+  },
+  "construction": {
+    "main_structure": "Steel frame with timber finish",
+    "wall_panels": "",
+    "roof_system": "Pitched gable, asphalt or metal sheet",
+    "floor_system": "",
+    "glazing": "Tempered glass front gable",
+    "insulation_thickness_mm": null,
+    "exterior_finish": "Wood cladding",
+    "interior_finish": ""
+  },
+  "electrical": {
+    "total_power_kw": null,
+    "brand_standards": [],
+    "appliances_included": []
+  },
+  "plumbing": {
+    "water_heater": "",
+    "toilet": "",
+    "shower": ""
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": false,
+    "internal_staircase": true,
+    "loft": true,
+    "rooftop_terrace": false,
+    "balcony": true,
+    "panoramic_glass": true,
+    "off_grid_ready": false,
+    "smart_home": false,
+    "fireproof_rated": false,
+    "seismic_rated": false,
+    "cold_climate_insulation": false,
+    "ships_as_kit": true,
+    "ships_finished": false
+  },
+  "certifications": [],
+  "use_cases": [
+    "vacation-home",
+    "glamping",
+    "b&b",
+    "tiny-home"
+  ],
+  "pricing": {
+    "display": "",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": "Quote on request; 1 unit fits a 20'GP shipping container"
+  },
+  "logistics": {
+    "shipping_format": "Packed as parts and materials, 1 × 20' GP container",
+    "assembly_time": "3 days to 1 week (on-site assembly)",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "Modulaires/bella global/Maison triangle.pdf",
+    "catalogue_pages": "1",
+    "notes": "Seeded from Bella Global Maison triangle quotation, \"with loft + terrace,\n~47 m²\" rows. See `supplier-folders.txt` in this same folder for the full\nlist of supplier folders to check when sourcing this SKU.\n"
+  }
+}

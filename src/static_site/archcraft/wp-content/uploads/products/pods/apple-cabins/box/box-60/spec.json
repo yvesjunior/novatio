@@ -1,0 +1,96 @@
+{
+  "sku": "box-60",
+  "name": "Box 60",
+  "status": "draft",
+  "taxonomy": {
+    "category": "pods",
+    "sub_category": "apple-cabins",
+    "series": "box"
+  },
+  "summary": {
+    "tagline": "Larger box with rooftop terrace",
+    "description": ""
+  },
+  "dimensions": {
+    "length_m": 8.5,
+    "width_m": null,
+    "height_m": null,
+    "floor_area_m2": 60,
+    "floor_area_ft2": 646,
+    "weight_kg": null,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "2-4",
+    "bedrooms": null,
+    "bathrooms": null,
+    "layouts_available": []
+  },
+  "construction": {
+    "main_structure": "Steel chassis + aluminium body",
+    "wall_panels": "",
+    "roof_system": "",
+    "floor_system": "",
+    "glazing": "",
+    "insulation_thickness_mm": null,
+    "exterior_finish": "Two-tone rectangular shell",
+    "interior_finish": ""
+  },
+  "electrical": {
+    "total_power_kw": null,
+    "brand_standards": [],
+    "appliances_included": []
+  },
+  "plumbing": {
+    "water_heater": "",
+    "toilet": "",
+    "shower": ""
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": false,
+    "internal_staircase": false,
+    "loft": false,
+    "rooftop_terrace": false,
+    "balcony": false,
+    "panoramic_glass": false,
+    "off_grid_ready": false,
+    "smart_home": false,
+    "fireproof_rated": false,
+    "seismic_rated": false,
+    "cold_climate_insulation": false,
+    "ships_as_kit": false,
+    "ships_finished": true
+  },
+  "certifications": [],
+  "use_cases": [
+    "b&b",
+    "glamping",
+    "vacation-home"
+  ],
+  "pricing": {
+    "display": "",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": ""
+  },
+  "logistics": {
+    "shipping_format": "",
+    "assembly_time": "",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "",
+    "catalogue_pages": "",
+    "notes": "Auto-generated seed. Refine dimensions and finishes from\n`supplier-folders.txt` (in this same folder) and the catalogues it points to.\n"
+  }
+}

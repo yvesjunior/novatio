@@ -1,0 +1,110 @@
+{
+  "sku": "curve-38",
+  "name": "Curve 38",
+  "status": "draft",
+  "taxonomy": {
+    "category": "pods",
+    "sub_category": "space-capsules",
+    "series": "curve"
+  },
+  "summary": {
+    "tagline": "11.5 m futuristic capsule for 2–4 people",
+    "description": "A sweeping, all-rounded capsule shell for high-end glamping resorts,\nboutique B&Bs, and design-forward backyard retreats. The Curve series\nfavours soft silhouettes and floor-to-ceiling glazing; the 38 m² model\nis the flagship size of the series, sleeping up to 4.\n"
+  },
+  "dimensions": {
+    "length_m": 11.5,
+    "width_m": 3.3,
+    "height_m": 3.3,
+    "floor_area_m2": 38,
+    "floor_area_ft2": 409,
+    "weight_kg": 9000,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "2-4",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "layouts_available": [
+      "studio",
+      "1BR"
+    ]
+  },
+  "construction": {
+    "main_structure": "Seismic steel structure",
+    "wall_panels": "Polyurethane foam 60 mm + high-density extruded board 60 mm",
+    "roof_system": "Standard color aluminum plate",
+    "floor_system": "Base cement fiberboard + indoor Dekor floor",
+    "glazing": "Low-E hollow tempered 6+12A+6, double-layer",
+    "insulation_thickness_mm": 120,
+    "exterior_finish": "Fluorocarbon-paint custom aluminum plate",
+    "interior_finish": "Standard color decorative panel + aluminum"
+  },
+  "electrical": {
+    "total_power_kw": 14,
+    "brand_standards": [
+      "Panasonic",
+      "Chint",
+      "Schneider",
+      "Midea"
+    ],
+    "appliances_included": [
+      "Air conditioner 1.5P + 2P",
+      "Built-in refrigerator",
+      "Smart bathroom mirror",
+      "Smart fire alarm (3-second induction, 10-year standby)"
+    ]
+  },
+  "plumbing": {
+    "water_heater": "A.O. Smith 60 L",
+    "toilet": "Panasonic / Kohler",
+    "shower": "Panasonic / Kohler"
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": false,
+    "internal_staircase": false,
+    "loft": false,
+    "rooftop_terrace": false,
+    "balcony": false,
+    "panoramic_glass": true,
+    "off_grid_ready": false,
+    "smart_home": true,
+    "fireproof_rated": true,
+    "seismic_rated": true,
+    "cold_climate_insulation": false,
+    "ships_as_kit": false,
+    "ships_finished": true
+  },
+  "certifications": [],
+  "use_cases": [
+    "b&b",
+    "glamping",
+    "vacation-home",
+    "adu"
+  ],
+  "pricing": {
+    "display": "",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": "FOB China factory; installation and shipping not included"
+  },
+  "logistics": {
+    "shipping_format": "1 × 40' HQ container (one capsule per slot)",
+    "assembly_time": "Plug-and-play; site hookup only",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "Pods/Etong /[-T40-PRODUCT-CONFIGURATION-]--ETONG-SPACE-CAPSULE-HOMES_.pdf",
+    "catalogue_pages": "1",
+    "notes": "Seed data from Etong T40. See `supplier-folders.txt` in this same folder\nfor the full list of supplier folders to check when sourcing this SKU.\n"
+  }
+}

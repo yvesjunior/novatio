@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "predev": "node scripts/build-partials.mjs",
-    "prebuild": "node scripts/build-partials.mjs",
+    "predev": "node scripts/build-products.mjs && node scripts/build-partials.mjs",
+    "prebuild": "node scripts/build-products.mjs && node scripts/build-partials.mjs",
     "build:partials": "node scripts/build-partials.mjs",
+    "build:products": "node scripts/build-products.mjs",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
     "test:visual:report": "playwright show-report"

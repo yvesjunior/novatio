@@ -1,0 +1,94 @@
+{
+  "sku": "food-truck-premium",
+  "name": "Food Truck Premium",
+  "status": "draft",
+  "taxonomy": {
+    "category": "commercial-units",
+    "sub_category": "food-trucks",
+    "series": null
+  },
+  "summary": {
+    "tagline": "Premium-finish mobile F&B with extended prep area",
+    "description": ""
+  },
+  "dimensions": {
+    "length_m": null,
+    "width_m": null,
+    "height_m": null,
+    "floor_area_m2": 14,
+    "floor_area_ft2": 151,
+    "weight_kg": null,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "",
+    "bedrooms": null,
+    "bathrooms": null,
+    "layouts_available": []
+  },
+  "construction": {
+    "main_structure": "Steel chassis on trailer",
+    "wall_panels": "",
+    "roof_system": "",
+    "floor_system": "",
+    "glazing": "",
+    "insulation_thickness_mm": null,
+    "exterior_finish": "",
+    "interior_finish": ""
+  },
+  "electrical": {
+    "total_power_kw": null,
+    "brand_standards": [],
+    "appliances_included": []
+  },
+  "plumbing": {
+    "water_heater": "",
+    "toilet": "",
+    "shower": ""
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": true,
+    "internal_staircase": false,
+    "loft": false,
+    "rooftop_terrace": false,
+    "balcony": false,
+    "panoramic_glass": false,
+    "off_grid_ready": false,
+    "smart_home": false,
+    "fireproof_rated": false,
+    "seismic_rated": false,
+    "cold_climate_insulation": false,
+    "ships_as_kit": false,
+    "ships_finished": true
+  },
+  "certifications": [],
+  "use_cases": [
+    "commercial"
+  ],
+  "pricing": {
+    "display": "",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": ""
+  },
+  "logistics": {
+    "shipping_format": "",
+    "assembly_time": "",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "",
+    "catalogue_pages": "",
+    "notes": "Auto-generated seed. Refine dimensions and finishes from\n`supplier-folders.txt` (in this same folder) and the catalogues it points to.\n"
+  }
+}

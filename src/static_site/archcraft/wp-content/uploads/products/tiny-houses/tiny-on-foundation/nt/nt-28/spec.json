@@ -1,0 +1,103 @@
+{
+  "sku": "nt-28",
+  "name": "NT 28",
+  "status": "draft",
+  "taxonomy": {
+    "category": "tiny-houses",
+    "sub_category": "tiny-on-foundation",
+    "series": "nt"
+  },
+  "summary": {
+    "tagline": "28 m² code-compliant tiny home, designed for the Canadian climate",
+    "description": "A modern, two-tone tiny home on permanent foundation. Built offsite to\nCanadian factory-built standards (CSA-A277) and tested for both\nSouthern and Northern Ontario climate zones. Cost-certain pricing —\nonce the spec is locked, the delivered price is fixed.\n"
+  },
+  "dimensions": {
+    "length_m": null,
+    "width_m": null,
+    "height_m": null,
+    "floor_area_m2": 28,
+    "floor_area_ft2": 301,
+    "weight_kg": null,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "1-2",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "layouts_available": [
+      "studio"
+    ]
+  },
+  "construction": {
+    "main_structure": "Light-gauge steel frame",
+    "wall_panels": "",
+    "roof_system": "",
+    "floor_system": "",
+    "glazing": "",
+    "insulation_thickness_mm": null,
+    "exterior_finish": "",
+    "interior_finish": ""
+  },
+  "electrical": {
+    "total_power_kw": null,
+    "brand_standards": [],
+    "appliances_included": []
+  },
+  "plumbing": {
+    "water_heater": "",
+    "toilet": "",
+    "shower": ""
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": false,
+    "internal_staircase": false,
+    "loft": false,
+    "rooftop_terrace": false,
+    "balcony": false,
+    "panoramic_glass": false,
+    "off_grid_ready": false,
+    "smart_home": true,
+    "fireproof_rated": false,
+    "seismic_rated": false,
+    "cold_climate_insulation": true,
+    "ships_as_kit": false,
+    "ships_finished": true
+  },
+  "certifications": [
+    "CSA-A277",
+    "NBC",
+    "OBC",
+    "QCC"
+  ],
+  "use_cases": [
+    "tiny-home",
+    "primary-residence",
+    "adu"
+  ],
+  "pricing": {
+    "display": "Cost-certain; quote on request",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": "Once spec is finalised the delivered price is locked"
+  },
+  "logistics": {
+    "shipping_format": "Trucked finished to site (one prefab module)",
+    "assembly_time": "Site hookup only",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "Fournisseur canadien/Habitat 28 Ontario/HABITAT28_MODELS BROCHURE.pdf",
+    "catalogue_pages": "",
+    "notes": "Seeded from Habitat 28 \"28 ext / 28eco\" lineup — Brantford, Ontario.\n30 ready-to-use product photos in\n`Fournisseur canadien/Habitat 28 Ontario/{28 ext, 28eco}/PHOTO-*.jpg`.\nNumerical dimensions / electrical specs not yet captured — fill in\nwhen reviewing the brochure.\n\nSee `supplier-folders.txt` in this same folder for sourcing options.\n"
+  }
+}

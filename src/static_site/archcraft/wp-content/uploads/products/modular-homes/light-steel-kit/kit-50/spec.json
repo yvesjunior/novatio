@@ -1,0 +1,102 @@
+{
+  "sku": "kit-50",
+  "name": "Kit 50",
+  "status": "draft",
+  "taxonomy": {
+    "category": "modular-homes",
+    "sub_category": "light-steel-kit",
+    "series": null
+  },
+  "summary": {
+    "tagline": "50 m² light-gauge-steel kit-of-parts house",
+    "description": "A galvanised light-steel kit priced per square metre. Ships flat-packed\nwith structural framing, prefabricated walls, roofing, kitchen, bathroom,\nand finishes. Fast on-site assembly with no specialised equipment —\na builder-friendly alternative to traditional stick framing.\n"
+  },
+  "dimensions": {
+    "length_m": null,
+    "width_m": null,
+    "height_m": null,
+    "floor_area_m2": 50,
+    "floor_area_ft2": 538,
+    "weight_kg": null,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "2-4",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "layouts_available": [
+      "1BR open",
+      "1BR + study"
+    ]
+  },
+  "construction": {
+    "main_structure": "Q350/Q550 galvanised steel columns, beams, purlins (275 g/m² hot-dip galvanised)",
+    "wall_panels": "Soundproof / insulated composite panels with PVC or metal cladding",
+    "roof_system": "Purlins + waterproof layer (asphalt shingles or metal sheet)",
+    "floor_system": "Multi-layer + PVC flooring",
+    "glazing": "Aluminium-framed windows (1200 × 900 mm); steel entry door",
+    "insulation_thickness_mm": 50,
+    "exterior_finish": "Waterproof ceramic stone-effect tiles",
+    "interior_finish": "Latex paint + primer; aluminium ceiling in kitchen/bathroom"
+  },
+  "electrical": {
+    "total_power_kw": null,
+    "brand_standards": [],
+    "appliances_included": [
+      "L-shaped kitchen cabinet (eco particleboard + quartz countertop)",
+      "5.0 kW gas/electric hybrid range with hood"
+    ]
+  },
+  "plumbing": {
+    "water_heater": "",
+    "toilet": "Water-saving toilet + ceramic basin",
+    "shower": "Tempered-glass enclosure + anti-slip mat"
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": false,
+    "internal_staircase": false,
+    "loft": false,
+    "rooftop_terrace": false,
+    "balcony": false,
+    "panoramic_glass": false,
+    "off_grid_ready": false,
+    "smart_home": false,
+    "fireproof_rated": false,
+    "seismic_rated": false,
+    "cold_climate_insulation": false,
+    "ships_as_kit": true,
+    "ships_finished": false
+  },
+  "certifications": [],
+  "use_cases": [
+    "primary-residence",
+    "adu",
+    "vacation-home"
+  ],
+  "pricing": {
+    "display": "≈ USD 17 / m² for main steel frame; full kit pricing available on quote",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": "Per-line-item pricing; excludes land, labor, taxes, transportation"
+  },
+  "logistics": {
+    "shipping_format": "Flat-pack kit (1 × 40' HQ for 50 m²)",
+    "assembly_time": "On-site assembly, builder-grade crew",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "Modulaires/Easy home/Easy home 50m2.pdf",
+    "catalogue_pages": "1-2",
+    "notes": "Seeded from Easy Home (Qingdao) 50 m² quotation. See\n`supplier-folders.txt` in this same folder for sourcing options.\n\nSister sizes (60, 74, 150, 176 m²) are in `Modulaires/Easy home/`\nand become Kit-60, Kit-75, Kit-100, Kit-150 in the Nanopods catalogue.\n"
+  }
+}

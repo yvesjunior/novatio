@@ -1,0 +1,96 @@
+{
+  "sku": "chalet-25",
+  "name": "Chalet 25",
+  "status": "draft",
+  "taxonomy": {
+    "category": "cabins",
+    "sub_category": "chalet-lodge-cabins",
+    "series": null
+  },
+  "summary": {
+    "tagline": "",
+    "description": ""
+  },
+  "dimensions": {
+    "length_m": 7.8,
+    "width_m": null,
+    "height_m": null,
+    "floor_area_m2": 25,
+    "floor_area_ft2": 269,
+    "weight_kg": null,
+    "folded": null,
+    "deployed": null
+  },
+  "capacity": {
+    "occupants": "2-3",
+    "bedrooms": null,
+    "bathrooms": null,
+    "layouts_available": []
+  },
+  "construction": {
+    "main_structure": "Wood frame",
+    "wall_panels": "",
+    "roof_system": "",
+    "floor_system": "",
+    "glazing": "",
+    "insulation_thickness_mm": null,
+    "exterior_finish": "Solid-wood cladding",
+    "interior_finish": ""
+  },
+  "electrical": {
+    "total_power_kw": null,
+    "brand_standards": [],
+    "appliances_included": []
+  },
+  "plumbing": {
+    "water_heater": "",
+    "toilet": "",
+    "shower": ""
+  },
+  "features": {
+    "foldable": false,
+    "expandable": false,
+    "stackable": false,
+    "on_wheels": false,
+    "internal_staircase": false,
+    "loft": false,
+    "rooftop_terrace": false,
+    "balcony": false,
+    "panoramic_glass": false,
+    "off_grid_ready": false,
+    "smart_home": false,
+    "fireproof_rated": false,
+    "seismic_rated": false,
+    "cold_climate_insulation": false,
+    "ships_as_kit": true,
+    "ships_finished": false
+  },
+  "certifications": [],
+  "use_cases": [
+    "vacation-home",
+    "glamping",
+    "b&b"
+  ],
+  "pricing": {
+    "display": "",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": ""
+  },
+  "logistics": {
+    "shipping_format": "",
+    "assembly_time": "",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "catalogue_pdf": "",
+    "catalogue_pages": "",
+    "notes": "Auto-generated seed. Refine dimensions and finishes from\n`supplier-folders.txt` (in this same folder) and the catalogues it points to.\n"
+  }
+}
