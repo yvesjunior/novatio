@@ -1,0 +1,60 @@
+{
+  "sku": "double-pods-xl",
+  "name": "Double pods xl",
+  "status": "draft",
+  "taxonomy": {
+    "category": "pods"
+  },
+  "summary": {
+    "tagline": "",
+    "description": ""
+  },
+  "dimensions": {
+    "length_m": null,
+    "width_m": null,
+    "height_m": null,
+    "floor_area_m2": null,
+    "floor_area_ft2": null,
+    "weight_kg": null
+  },
+  "capacity": {
+    "occupants": "",
+    "bedrooms": null,
+    "bathrooms": null,
+    "layouts_available": []
+  },
+  "construction": {},
+  "electrical": {},
+  "plumbing": {},
+  "features": {},
+  "certifications": [
+    "CSA",
+    "Conçu au Québec"
+  ],
+  "use_cases": [],
+  "pricing": {
+    "display": "On request",
+    "min_usd": null,
+    "max_usd": null,
+    "notes": ""
+  },
+  "logistics": {
+    "shipping_format": "",
+    "assembly_time": "",
+    "lead_time_days": null
+  },
+  "media": {
+    "hero_image": "",
+    "gallery": [
+      "2.png",
+      "3.png",
+      "4.png",
+      "Double pods xl.png"
+    ],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "notes": "Migrated from /models/Double pods xl/ on 2026-05-19."
+  }
+}

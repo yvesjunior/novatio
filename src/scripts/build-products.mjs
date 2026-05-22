@@ -48,6 +48,34 @@ function urlPathFor(spec, repoRel) {
   return `/portfolio/${repoRel}/`;
 }
 
+const SLIDE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg", ".pdf"]);
+
+/**
+ * Scan an SKU folder and return slide files in the established order:
+ *   2.png, 3.png, ... (numeric ascending, starting at 2 — 1.* is intentionally ignored)
+ *   then any non-numeric files alphabetically.
+ * Used as the auto-fallback when spec.json doesn't pin a hero/gallery explicitly.
+ */
+async function scanSkuSlides(skuDir) {
+  let entries;
+  try { entries = await fs.readdir(skuDir); } catch { return []; }
+  const files = entries.filter((f) => SLIDE_EXTS.has(path.extname(f).toLowerCase()));
+  const numeric = [], other = [];
+  for (const f of files) {
+    const m = f.match(/^(\d+)\.[^.]+$/);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (n < 2) continue; // skip 1.png / 1.jpg / etc.
+      numeric.push([n, f]);
+    } else {
+      other.push(f);
+    }
+  }
+  numeric.sort((a, b) => a[0] - b[0]);
+  other.sort();
+  return [...numeric.map((x) => x[1]), ...other];
+}
+
 function heroImgFor(repoRel, spec) {
   const heroFile = spec?.media?.hero_image;
   if (heroFile) {
@@ -100,6 +128,66 @@ function fmtFeatureChips(features) {
     .join("");
 }
 
+function statCard(label, value, unit, i18nKey) {
+  const muted = value == null || value === "" || value === "—";
+  const cls = muted ? "pdp-stat pdp-stat--muted" : "pdp-stat";
+  const shown = muted ? "—" : escapeHtml(String(value));
+  const unitHtml = unit && !muted ? `<span class="pdp-stat-unit">${escapeHtml(unit)}</span>` : "";
+  return `<div class="${cls}"><div class="pdp-stat-value">${shown}${unitHtml}</div><div class="pdp-stat-label" data-i18n="${i18nKey}">${escapeHtml(label)}</div></div>`;
+}
+
+function renderStatsBlock(items) {
+  // items: [{label, value, unit, i18nKey}, ...]
+  const cards = items.map((it) => statCard(it.label, it.value, it.unit, it.i18nKey)).join("");
+  return `<div class="pdp-stats">${cards}</div>`;
+}
+
+function defRow(key, value, i18nKey) {
+  const isMuted = !value || value === "—";
+  const valueHtml = isMuted ? `<div class="pdp-def-value pdp-def-value--muted">—</div>` : `<div class="pdp-def-value">${escapeHtml(String(value))}</div>`;
+  return `<div class="pdp-def"><div class="pdp-def-key" data-i18n="${i18nKey}">${escapeHtml(key)}</div>${valueHtml}</div>`;
+}
+
+function renderDefsBlock(items) {
+  // items: [{key, value, i18nKey}, ...]
+  const rows = items.map((it) => defRow(it.key, it.value, it.i18nKey)).join("");
+  return `<div class="pdp-defs">${rows}</div>`;
+}
+
+function renderSlider(repoRel, spec) {
+  // Slides come from media.hero_image (1st), then media.gallery, then media.floor_plan (if not already listed).
+  const slides = [];
+  const hero = spec?.media?.hero_image;
+  if (hero) slides.push(hero);
+  const gallery = Array.isArray(spec?.media?.gallery) ? spec.media.gallery : [];
+  for (const g of gallery) if (g && !slides.includes(g)) slides.push(g);
+  const fp = spec?.media?.floor_plan;
+  if (fp && !slides.includes(fp)) slides.push(fp);
+  // Fallback: at least one slide (the placeholder) so the layout doesn't break.
+  if (slides.length === 0) {
+    return `<div class="pdp-slider"><div class="pdp-slider-viewport"><div class="pdp-slider-track"><div class="pdp-slider-slide"><img src="${PLACEHOLDER_HERO}" alt="${escapeHtml(spec.name ?? spec.sku ?? "")}"/></div></div></div></div>`;
+  }
+  const alt = escapeHtml(spec.name ?? spec.sku ?? "");
+  const slideEls = slides
+    .map((file) => `<div class="pdp-slider-slide"><img src="/wp-content/uploads/products/${repoRel}/${file}" alt="${alt}" loading="lazy"/></div>`)
+    .join("");
+  const dotEls = slides
+    .map((_, i) => `<button type="button" class="pdp-slider-dot" aria-label="Slide ${i + 1}"></button>`)
+    .join("");
+  const showControls = slides.length > 1;
+  return [
+    '<div class="pdp-slider" aria-roledescription="carousel">',
+    '  <div class="pdp-slider-viewport">',
+    `    <div class="pdp-slider-track">${slideEls}</div>`,
+    "  </div>",
+    showControls ? '  <button type="button" class="pdp-slider-btn pdp-slider-prev" aria-label="Previous slide">‹</button>' : "",
+    showControls ? '  <button type="button" class="pdp-slider-btn pdp-slider-next" aria-label="Next slide">›</button>' : "",
+    showControls ? `  <div class="pdp-slider-dots">${dotEls}</div>` : "",
+    showControls ? '  <div class="pdp-slider-counter"></div>' : "",
+    "</div>",
+  ].join("\n");
+}
+
 function fmtUseCases(uc) {
   if (!Array.isArray(uc) || uc.length === 0) return "";
   return uc.map((u) => `<span class="pdp-tag">${escapeHtml(u)}</span>`).join("");
@@ -129,36 +217,46 @@ function renderPdp(template, spec, repoRel) {
     "{{TAGLINE}}": escapeHtml(spec.summary?.tagline ?? ""),
     "{{DESCRIPTION}}": escapeHtml(spec.summary?.description ?? "").replace(/\n/g, "<br>"),
     "{{HERO}}": hero,
+    "{{SLIDER}}": renderSlider(repoRel, spec),
     "{{CATEGORY}}": escapeHtml(tax.category ?? ""),
     "{{SUB_CATEGORY}}": escapeHtml(tax.sub_category ?? ""),
     "{{SERIES}}": escapeHtml(tax.series ?? ""),
     "{{BREADCRUMBS}}": breadcrumbParts,
-    "{{LENGTH}}": fmtDim(dims.length_m) + (dims.length_m != null ? " m" : ""),
-    "{{WIDTH}}": fmtDim(dims.width_m) + (dims.width_m != null ? " m" : ""),
-    "{{HEIGHT}}": fmtDim(dims.height_m) + (dims.height_m != null ? " m" : ""),
-    "{{FLOOR_AREA}}":
-      dims.floor_area_m2 != null
-        ? `${dims.floor_area_m2} m²` + (dims.floor_area_ft2 ? ` (${dims.floor_area_ft2} ft²)` : "")
-        : "—",
-    "{{WEIGHT}}": dims.weight_kg != null ? `${dims.weight_kg} kg` : "—",
-    "{{OCCUPANTS}}": escapeHtml(cap.occupants ?? "—"),
-    "{{BEDROOMS}}": fmtDim(cap.bedrooms),
-    "{{BATHROOMS}}": fmtDim(cap.bathrooms),
-    "{{MAIN_STRUCTURE}}": escapeHtml(cons.main_structure ?? "—"),
-    "{{WALL_PANELS}}": escapeHtml(cons.wall_panels ?? "—"),
-    "{{ROOF_SYSTEM}}": escapeHtml(cons.roof_system ?? "—"),
-    "{{FLOOR_SYSTEM}}": escapeHtml(cons.floor_system ?? "—"),
-    "{{GLAZING}}": escapeHtml(cons.glazing ?? "—"),
-    "{{INSULATION_MM}}":
-      cons.insulation_thickness_mm != null ? `${cons.insulation_thickness_mm} mm` : "—",
-    "{{EXTERIOR_FINISH}}": escapeHtml(cons.exterior_finish ?? "—"),
-    "{{INTERIOR_FINISH}}": escapeHtml(cons.interior_finish ?? "—"),
-    "{{TOTAL_POWER}}": elec.total_power_kw != null ? `${elec.total_power_kw} kW` : "—",
-    "{{ELEC_BRANDS}}": Array.isArray(elec.brand_standards) ? elec.brand_standards.join(", ") : "—",
-    "{{APPLIANCES}}": Array.isArray(elec.appliances_included) ? elec.appliances_included.join(", ") : "—",
-    "{{WATER_HEATER}}": escapeHtml(plumb.water_heater ?? "—"),
-    "{{TOILET}}": escapeHtml(plumb.toilet ?? "—"),
-    "{{SHOWER}}": escapeHtml(plumb.shower ?? "—"),
+    "{{DIMENSIONS_BLOCK}}": renderStatsBlock([
+      { label: "Length",     value: dims.length_m,      unit: "m",   i18nKey: "pdp.label.length" },
+      { label: "Width",      value: dims.width_m,       unit: "m",   i18nKey: "pdp.label.width" },
+      { label: "Height",     value: dims.height_m,      unit: "m",   i18nKey: "pdp.label.height" },
+      { label: "Floor area", value: dims.floor_area_m2, unit: "m²",  i18nKey: "pdp.label.floor_area" },
+      { label: "Weight",     value: dims.weight_kg,     unit: "kg",  i18nKey: "pdp.label.weight" },
+    ]),
+    "{{CAPACITY_BLOCK}}": renderStatsBlock([
+      { label: "Occupants",  value: cap.occupants,  unit: "",  i18nKey: "pdp.label.occupants" },
+      { label: "Bedrooms",   value: cap.bedrooms,   unit: "",  i18nKey: "pdp.label.bedrooms" },
+      { label: "Bathrooms",  value: cap.bathrooms,  unit: "",  i18nKey: "pdp.label.bathrooms" },
+    ]),
+    "{{CONSTRUCTION_BLOCK}}": renderDefsBlock([
+      { key: "Main structure",  value: cons.main_structure,  i18nKey: "pdp.label.main_structure" },
+      { key: "Wall panels",     value: cons.wall_panels,     i18nKey: "pdp.label.wall_panels" },
+      { key: "Roof system",     value: cons.roof_system,     i18nKey: "pdp.label.roof_system" },
+      { key: "Floor system",    value: cons.floor_system,    i18nKey: "pdp.label.floor_system" },
+      { key: "Glazing",         value: cons.glazing,         i18nKey: "pdp.label.glazing" },
+      { key: "Insulation",      value: cons.insulation_thickness_mm != null ? `${cons.insulation_thickness_mm} mm` : "", i18nKey: "pdp.label.insulation" },
+      { key: "Exterior finish", value: cons.exterior_finish, i18nKey: "pdp.label.exterior_finish" },
+      { key: "Interior finish", value: cons.interior_finish, i18nKey: "pdp.label.interior_finish" },
+    ]),
+    "{{ELECTRICAL_BLOCK}}": renderDefsBlock([
+      { key: "Total power",     value: elec.total_power_kw != null ? `${elec.total_power_kw} kW` : "", i18nKey: "pdp.label.total_power" },
+      { key: "Brand standards", value: Array.isArray(elec.brand_standards) && elec.brand_standards.length ? elec.brand_standards.join(", ") : "", i18nKey: "pdp.label.elec_brands" },
+      { key: "Appliances",      value: Array.isArray(elec.appliances_included) && elec.appliances_included.length ? elec.appliances_included.join(", ") : "", i18nKey: "pdp.label.appliances" },
+      { key: "Water heater",    value: plumb.water_heater, i18nKey: "pdp.label.water_heater" },
+      { key: "Toilet",          value: plumb.toilet,       i18nKey: "pdp.label.toilet" },
+      { key: "Shower",          value: plumb.shower,       i18nKey: "pdp.label.shower" },
+    ]),
+    "{{LOGISTICS_BLOCK}}": renderDefsBlock([
+      { key: "Shipping format", value: log.shipping_format, i18nKey: "pdp.label.shipping" },
+      { key: "Assembly",        value: log.assembly_time,   i18nKey: "pdp.label.assembly" },
+      { key: "Lead time",       value: log.lead_time_days != null ? `${log.lead_time_days} days` : "", i18nKey: "pdp.label.lead_time" },
+    ]),
     "{{FEATURE_CHIPS}}": fmtFeatureChips(spec.features),
     "{{CERT_BADGES}}": fmtCertList(spec.certifications),
     "{{USE_CASES}}": fmtUseCases(spec.use_cases),
@@ -180,14 +278,7 @@ function renderPdp(template, spec, repoRel) {
 async function main() {
   const specs = await findSpecFiles(PRODUCTS_DIR);
   const flatIndex = [];
-  let pdpTemplate = null;
-  try {
-    pdpTemplate = await fs.readFile(PDP_TEMPLATE_PATH, "utf-8");
-  } catch {
-    console.warn(`[build:products] PDP template missing at ${PDP_TEMPLATE_PATH} — skipping per-SKU HTML.`);
-  }
-
-  let pdpCount = 0;
+  let listedCount = 0, hiddenCount = 0;
   for (const specPath of specs) {
     const json = await fs.readFile(specPath, "utf-8");
     const spec = JSON.parse(json);
@@ -196,6 +287,58 @@ async function main() {
       .split(path.sep)
       .join("/");
 
+    // Auto-scan the SKU folder for slide files (1.png, 2.png, ..., then non-numeric).
+    // Spec.json's media fields take priority when set — otherwise the convention
+    // applies automatically (drop 1.png in, it becomes the listing thumbnail).
+    const skuDir = path.dirname(specPath);
+    const onDisk = await scanSkuSlides(skuDir);
+
+    // Hero: spec.media.hero_image if set, otherwise "2.png" if present on disk.
+    // (1.png is intentionally ignored — convention starts at 2.png.)
+    // No fallback — if neither is set, the listing hides the card by default.
+    let resolvedHeroFile = spec?.media?.hero_image;
+    if (!resolvedHeroFile && onDisk.includes("2.png")) {
+      resolvedHeroFile = "2.png";
+    }
+    let hasRealHero = false;
+    if (resolvedHeroFile) {
+      try {
+        await fs.access(path.join(skuDir, resolvedHeroFile));
+        hasRealHero = true;
+      } catch {
+        hasRealHero = false;
+      }
+    }
+    // Mirror the resolved hero back onto the spec object so heroImgFor() sees it.
+    if (resolvedHeroFile) {
+      spec.media = spec.media || {};
+      spec.media.hero_image = resolvedHeroFile;
+    }
+
+    // Build the slide list for the diaporama. Files are PDF/PNG/JPG/WEBP/SVG;
+    // each gets one slide. The first slide is also the listing thumbnail.
+    const slideFiles = [];
+    const hasExplicitGallery = Array.isArray(spec?.media?.gallery) && spec.media.gallery.length > 0;
+    if (hasExplicitGallery) {
+      // Honour spec-provided order: hero first, then explicit gallery, then floor_plan.
+      if (resolvedHeroFile) slideFiles.push(resolvedHeroFile);
+      for (const g of spec.media.gallery) if (g && !slideFiles.includes(g)) slideFiles.push(g);
+      if (spec?.media?.floor_plan && !slideFiles.includes(spec.media.floor_plan)) {
+        slideFiles.push(spec.media.floor_plan);
+      }
+    } else {
+      // No explicit gallery — use the on-disk scan, in the established order.
+      for (const f of onDisk) if (!slideFiles.includes(f)) slideFiles.push(f);
+    }
+    const slides = slideFiles.map((file) => {
+      const url = `/wp-content/uploads/products/${repoRel}/${file}`;
+      const ext = path.extname(file).toLowerCase();
+      const type = ext === ".pdf" ? "pdf" : "image";
+      return { url, type };
+    });
+
+    // Index every SKU, with a has_hero flag. The listing page hides incomplete
+    // SKUs by default; a "Show all" toggle on /portfolio/ reveals them.
     flatIndex.push({
       sku: spec.sku,
       name: spec.name,
@@ -209,17 +352,12 @@ async function main() {
       features: spec.features ?? {},
       certifications: spec.certifications ?? [],
       hero: heroImgFor(repoRel, spec),
+      has_hero: hasRealHero,
+      slides,
       url: urlPathFor(spec, repoRel),
       slug_path: repoRel,
     });
-
-    if (pdpTemplate) {
-      const html = renderPdp(pdpTemplate, spec, repoRel);
-      const outDir = path.join(PORTFOLIO_DIR, repoRel);
-      await fs.mkdir(outDir, { recursive: true });
-      await fs.writeFile(path.join(outDir, "index.html"), html, "utf-8");
-      pdpCount++;
-    }
+    if (hasRealHero) listedCount++; else hiddenCount++;
   }
 
   // Sort for deterministic output.
@@ -230,7 +368,7 @@ async function main() {
   );
 
   await fs.writeFile(INDEX_OUT, JSON.stringify(flatIndex, null, 2) + "\n", "utf-8");
-  console.log(`[build:products] indexed ${flatIndex.length} SKUs, generated ${pdpCount} PDP pages`);
+  console.log(`[build:products] indexed ${flatIndex.length} SKUs (${listedCount} with hero, ${hiddenCount} hidden by default)`);
 }
 
 main().catch((e) => {

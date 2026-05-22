@@ -1,14 +1,11 @@
 {
   "_comment": "Dictionnaire français. Les clés non traduites retombent sur le texte HTML d'origine.",
-
   "common.discover_our_models": "DÉCOUVRIR NOS MODÈLES",
   "common.discover_our_work": "DÉCOUVRIR NOS PROJETS",
   "common.read_more": "EN SAVOIR PLUS",
   "common.get_a_quote": "DEMANDER UNE SOUMISSION",
-
   "header.hours": "Lundi–Vendredi, 8h–18h",
   "footer.newsletter.placeholder": "Saisissez votre courriel",
-
   "nav.home": "Accueil",
   "nav.pages": "Entreprise",
   "nav.about_us": "À propos",
@@ -16,35 +13,29 @@
   "nav.faqs": "FAQ",
   "nav.error_404": "Erreur 404",
   "nav.services": "Services",
-  "nav.portfolio": "Réalisations",
+  "nav.portfolio": "Nos modèles",
   "nav.contact_us": "Nous joindre",
   "nav.careers": "Carrières",
   "nav.team": "Notre équipe",
-
   "home.hero.title": "Construire des maisons avec \nvision et innovation",
   "home.hero.subtitle": "Manufacturiers certifiés. Matériaux haut de gamme. Livraison et installation clé en main.",
   "home.hero.counter1.label": "Soumissions",
   "home.hero.counter2.label": "Projets réalisés",
-
   "home.about.eyebrow": " À propos ",
   "home.about.heading": "Redéfinir le <span class=\"pxl-title--highlight \"> marché </span> de l'habitation",
   "home.about.body": "Rendre l'habitat modulaire accessible partout en Amérique du Nord — des zones urbaines aux communautés les plus éloignées.",
   "home.about.counter.label": "Années d'expérience",
-
   "home.achievement.eyebrow": " Notre accomplissement ",
   "home.achievement.heading": "Façonner l'avenir <span class=\"pxl-title--highlight \"> à chaque </span> succès",
   "home.achievement.body": "Par un design innovant et des solutions visionnaires, nous transformons les espaces et façonnons un avenir durable bâti sur la créativité,",
-
-  "home.portfolio.eyebrow": " Réalisations ",
+  "home.portfolio.eyebrow": " Nos modèles ",
   "home.portfolio.heading": "Maisons modulaires <span class=\"pxl-title--highlight \"> partout en </span> Amérique du Nord",
-
   "home.blog.post1.title": " 10 tendances de design intérieur qui façonnent les espaces modernes ",
   "home.blog.post2.title": " Allier fonctionnalité et style à la maison ",
   "home.blog.post3.title": " Choisir la palette de couleurs idéale pour votre espace ",
   "home.blog.date_04_march": "04 mars",
   "home.blog.no_comments": "Aucun commentaire",
   "home.blog.read_more": " Lire la suite ",
-
   "home.faq.eyebrow": " FAQ ",
   "home.faq.heading": "Des réponses qui inspirent <span class=\"pxl-title--highlight \"> confiance à chaque </span> étape",
   "home.faq.body": "Nous fournissons des réponses claires et transparentes aux questions de nos clients, pour bâtir la confiance à chaque étape du projet.",
@@ -58,7 +49,6 @@
   "home.faq.a4": "Notre travail allie créativité, fonctionnalité et design durable pour créer des espaces intemporels et inspirants.",
   "home.faq.q5": "Fournissez-vous des estimations de coûts avant de commencer ?",
   "home.faq.a5": "Oui, nous fournissons des estimations claires avant le démarrage pour aider nos clients à bien planifier leur budget.",
-
   "footer.newsletter.heading": "Abonnez-vous à notre infolettre",
   "footer.newsletter.body": "Recevez nos conseils de design, tendances et inspirations exclusives directement dans votre boîte courriel.",
   "footer.brand": "Rendre l'habitat modulaire accessible partout en Amérique du Nord — des zones urbaines aux communautés les plus éloignées.",
@@ -67,7 +57,6 @@
   "footer.office_address.heading": "Adresse",
   "footer.email_address.heading": "Courriel",
   "footer.copyright": "© 2026  Novatio. Tous droits réservés.",
-
   "about.page_title": "À propos",
   "about.hero.eyebrow": " À propos ",
   "about.hero.heading": "Concevoir des espaces intemporels où art, \n<span class=\"pxl-title--highlight \"> fonction et innovation </span> vivent en \nparfaite harmonie",
@@ -100,7 +89,6 @@
   "about.team.desc.guy_hawkins": "Notre équipe supervise la construction, l'installation et les finitions pour livrer un espace impeccable qui dépasse les attentes.",
   "about.team.desc.theresa_webb": "Nous prenons en charge l'ensemble du processus — construction, installation, perfectionnement des moindres détails — pour livrer un espace abouti qui impressionne et va plus loin que ce que les clients imaginent.",
   "about.team.desc.floyd_miles": "Du gros œuvre à l'installation et aux finitions méticuleuses, notre équipe assume l'entière responsabilité de créer un espace final impeccable qui dépasse vraiment les attentes.",
-
   "services.page_title": "Services",
   "services.hero.eyebrow": " Nos services ",
   "services.hero.heading": "Habitations modulaires préfabriquées, <span class=\"pxl-title--highlight \"> livrées clé en main </span> partout au Canada",
@@ -120,7 +108,6 @@
   "services.process.step2": "Concept et design",
   "services.process.step3": "Aménagement intérieur sur mesure",
   "services.process.step4": "Logistique et installation",
-
   "contact.page_title": "Nous joindre",
   "contact.location.title": "Notre adresse",
   "contact.location.body": "Au plaisir de vous accueillir à notre adresse.<br><a href=\"https://maps.app.goo.gl/yGrwottpguSuwFJX9\">6391 Elgin. Celina, Delaware 10299</a>",
@@ -128,17 +115,13 @@
   "contact.phone.body": "Besoin d'aide immédiate ? N'hésitez pas \nà nous appeler au<br><a href=\"tel:+18194484524\"><strong>+1 (819) 448-4524</strong></a>",
   "contact.email.title": "Courriel",
   "contact.email.body": "Nous nous engageons à vous accompagner à chaque étape.<br><a href=\"mailto:renaud.theroux@overseaimportexports.com\">renaud.theroux@overseaimportexports.com</a>",
-
   "careers.page_title": "Carrières",
   "careers.heading": " Joignez-vous à notre équipe",
   "careers.body": " Nous sommes toujours à la recherche de gens talentueux. Revenez bientôt pour voir nos postes ouverts, ou écrivez-nous aux coordonnées ci-dessous.",
   "careers.back_home": " Retour à l'accueil ",
-
   "faq.page_title": "FAQ",
-
   "gallery.page_title": "Galerie",
-
-  "portfolio.page_title": "Réalisations",
+  "portfolio.page_title": "Nos modèles",
   "portfolio.cat.kitchen": "Électroménagers de cuisine",
   "portfolio.cat.lighting": "Éclairage et électricité",
   "portfolio.cat.smart_home": "Domotique",
@@ -155,15 +138,12 @@
   "portfolio.post1.body": "Découvrez les dernières tendances de design qui transforment les maisons avec un attrait intemporel pour la vie moderne.",
   "portfolio.post2.body": "Apprenez des façons créatives d'allier beauté et utilité pour créer des espaces fonctionnels.",
   "portfolio.post_shared_body": "Intégrer des éléments naturels dans des structures modernes pour une harmonie et un équilibre de vie.",
-
   "portfolio.crafted-with-passion.page_title": "Réalisé avec passion",
   "portfolio.modern-residential-villa.page_title": "Villa résidentielle moderne",
-
   "error_404.page_title": "Erreur 404",
   "error_404.breadcrumb": "Page introuvable",
   "error_404.heading": " Oups ! Cette page est introuvable",
   "error_404.body": " La page que vous cherchez n'existe pas ou a peut-être été déplacée. Retournez à l'accueil ou réessayez.",
-
   "meta.title.home": "Novatio — Maisons modulaires livrées rapidement",
   "meta.title.about": "À propos – Novatio",
   "meta.title.services": "Services – Novatio",
@@ -171,11 +151,10 @@
   "meta.title.careers": "Carrières – Novatio",
   "meta.title.faq": "FAQ – Novatio",
   "meta.title.gallery": "Galerie – Novatio",
-  "meta.title.portfolio": "Réalisations – Novatio",
+  "meta.title.portfolio": "Nos modèles – Novatio",
   "meta.title.error_404": "Page introuvable – Novatio",
   "meta.title.portfolio.crafted_with_passion": "Réalisé avec passion – Novatio",
   "meta.title.portfolio.modern_residential_villa": "Villa résidentielle moderne – Novatio",
-
   "meta.description.home": "Maisons modulaires préfabriquées haut de gamme livrées et installées partout au Canada. Soumission en 24 heures, clé en main du permis à l'installation.",
   "meta.description.about": "Maison Novatio rend l'habitat modulaire accessible partout au Canada — des zones urbaines aux communautés éloignées. Découvrez notre équipe et notre processus.",
   "meta.description.services": "Distribution de modulaires préfabriqués résidentiels, commerciaux et institutionnels — livraison et installation clé en main partout au Canada.",
@@ -185,7 +164,6 @@
   "meta.description.gallery": "Galerie des maisons modulaires préfabriquées et des projets de Maison Novatio.",
   "meta.description.portfolio": "Sélection de projets Maison Novatio — maisons modulaires livrées et installées partout au Canada.",
   "meta.description.error_404": "La page que vous cherchez n'existe pas ou a été déplacée.",
-
   "portfolio.filters.title": "Filtrer",
   "portfolio.filters.category": "Catégorie",
   "portfolio.filters.sub_category": "Sous-catégorie",
@@ -193,7 +171,7 @@
   "portfolio.filters.model": "Modèle",
   "portfolio.filters.all": "Tout",
   "portfolio.filters.clear": "Tout effacer",
-
+  "portfolio.filters.show_all": "Afficher tous les modèles (même sans images)",
   "pdp.section.dimensions": "Dimensions",
   "pdp.section.capacity": "Capacité",
   "pdp.section.construction": "Construction",
@@ -227,5 +205,5 @@
   "pdp.label.shipping": "Format d'expédition",
   "pdp.label.assembly": "Assemblage",
   "pdp.label.lead_time": "Délai",
-  "pdp.back_to_portfolio": "Retour aux réalisations"
+  "pdp.back_to_portfolio": "Retour à nos modèles"
 }
