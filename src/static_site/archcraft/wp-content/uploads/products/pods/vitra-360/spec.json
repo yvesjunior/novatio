@@ -1,0 +1,36 @@
+{
+  "sku": "vitra-360",
+  "name": "Vitra 360",
+  "status": "draft",
+  "taxonomy": {
+    "category": "pods"
+  },
+  "summary": {
+    "tagline": "",
+    "description": ""
+  },
+  "dimensions": {},
+  "capacity": {},
+  "construction": {},
+  "electrical": {},
+  "plumbing": {},
+  "features": {},
+  "certifications": [
+    "Conçu au Québec"
+  ],
+  "use_cases": [],
+  "pricing": {
+    "display": "On request",
+    "notes": ""
+  },
+  "logistics": {},
+  "media": {
+    "hero_image": "",
+    "gallery": [],
+    "floor_plan": "",
+    "three_d_model": ""
+  },
+  "source": {
+    "notes": "Migrated from /Users/bationoyvesjunior/Downloads/Models/Novatio Vitra 360/"
+  }
+}

@@ -1,327 +1,106 @@
 [
   {
-    "sku": "t-inspace-t5",
-    "name": "T-Inspace T5",
+    "sku": "aura",
+    "name": "Aura",
     "tagline": "",
     "status": "draft",
-    "category": "container-homes",
+    "category": "pods",
     "sub_category": "",
     "series": null,
     "occupants": "",
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/container-homes/t-inspace-t5/2.png",
+    "hero": "/wp-content/uploads/products/pods/aura/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/container-homes/t-inspace-t5/2.png",
+        "url": "/wp-content/uploads/products/pods/aura/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/container-homes/t-inspace-t5/NOVATIO_T5_FINAL.png",
+        "url": "/wp-content/uploads/products/pods/aura/2.png",
+        "type": "image"
+      },
+      {
+        "url": "/wp-content/uploads/products/pods/aura/Aura pods.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/container-homes/t-inspace-t5/",
-    "slug_path": "container-homes/t-inspace-t5"
+    "url": "/portfolio/pods/aura/",
+    "slug_path": "pods/aura"
   },
   {
-    "sku": "t-inspace-t6",
-    "name": "T-Inspace T6",
+    "sku": "stella-180",
+    "name": "Stella 180",
     "tagline": "",
     "status": "draft",
-    "category": "container-homes",
+    "category": "pods",
     "sub_category": "",
     "series": null,
     "occupants": "",
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/container-homes/t-inspace-t6/2.png",
+    "hero": "/wp-content/uploads/products/pods/stella-180/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/container-homes/t-inspace-t6/2.png",
+        "url": "/wp-content/uploads/products/pods/stella-180/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/container-homes/t-inspace-t6/NOVATIO_T6_FINAL.png",
+        "url": "/wp-content/uploads/products/pods/stella-180/2.png",
+        "type": "image"
+      },
+      {
+        "url": "/wp-content/uploads/products/pods/stella-180/Loft 180.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/container-homes/t-inspace-t6/",
-    "slug_path": "container-homes/t-inspace-t6"
+    "url": "/portfolio/pods/stella-180/",
+    "slug_path": "pods/stella-180"
   },
   {
-    "sku": "t-loft-a",
-    "name": "T loft-A",
+    "sku": "vitra-360",
+    "name": "Vitra 360",
     "tagline": "",
     "status": "draft",
-    "category": "container-homes",
+    "category": "pods",
     "sub_category": "",
     "series": null,
     "occupants": "",
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/container-homes/t-loft-a/2.png",
+    "hero": "/wp-content/uploads/products/pods/vitra-360/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/container-homes/t-loft-a/2.png",
+        "url": "/wp-content/uploads/products/pods/vitra-360/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/container-homes/t-loft-a/3.png",
+        "url": "/wp-content/uploads/products/pods/vitra-360/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/container-homes/t-loft-a/T loft-A.png",
+        "url": "/wp-content/uploads/products/pods/vitra-360/Loft 360.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/container-homes/t-loft-a/",
-    "slug_path": "container-homes/t-loft-a"
+    "url": "/portfolio/pods/vitra-360/",
+    "slug_path": "pods/vitra-360"
   },
   {
-    "sku": "t-loft-b",
-    "name": "T loft-B",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/t-loft-b/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/t-loft-b/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/t-loft-b/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/t-loft-b/T loft-B.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/t-loft-b/",
-    "slug_path": "container-homes/t-loft-b"
-  },
-  {
-    "sku": "traveller-t7",
-    "name": "Traveller T7",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/traveller-t7/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/traveller-t7/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/traveller-t7/Nova Rigid-3.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/traveller-t7/",
-    "slug_path": "container-homes/traveller-t7"
-  },
-  {
-    "sku": "traveller-t8",
-    "name": "Traveller T8",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/traveller-t8/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/traveller-t8/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/traveller-t8/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/traveller-t8/4.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/traveller-t8/Nova case-1.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/traveller-t8/",
-    "slug_path": "container-homes/traveller-t8"
-  },
-  {
-    "sku": "tulan-01",
-    "name": "Tulan 01",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/tulan-01/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-01/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-01/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-01/Nova rigid 2.0.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/tulan-01/",
-    "slug_path": "container-homes/tulan-01"
-  },
-  {
-    "sku": "tulan-a01",
-    "name": "Tulan A01",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/tulan-a01/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-a01/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-a01/Nova rigid-2.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/tulan-a01/",
-    "slug_path": "container-homes/tulan-a01"
-  },
-  {
-    "sku": "tulan-a02",
-    "name": "Tulan A02",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/tulan-a02/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-a02/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-a02/Nova rigid-1.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/tulan-a02/",
-    "slug_path": "container-homes/tulan-a02"
-  },
-  {
-    "sku": "tulan-b01",
-    "name": "Tulan B01",
-    "tagline": "",
-    "status": "draft",
-    "category": "container-homes",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/container-homes/tulan-b01/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-b01/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/container-homes/tulan-b01/Nova rigid-3.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/container-homes/tulan-b01/",
-    "slug_path": "container-homes/tulan-b01"
-  },
-  {
-    "sku": "xxl-modulaire",
-    "name": "XXL Modulaire",
+    "sku": "apex",
+    "name": "Apex",
     "tagline": "",
     "status": "draft",
     "category": "modular-homes",
@@ -331,456 +110,128 @@
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/modular-homes/xxl-modulaire/2.png",
+    "hero": "/wp-content/uploads/products/modular-homes/apex/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/modular-homes/xxl-modulaire/2.png",
+        "url": "/wp-content/uploads/products/modular-homes/apex/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/xxl-modulaire/3.png",
+        "url": "/wp-content/uploads/products/modular-homes/apex/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/xxl-modulaire/XXL projet modulaire.png",
+        "url": "/wp-content/uploads/products/modular-homes/apex/Apex.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/modular-homes/xxl-modulaire/",
-    "slug_path": "modular-homes/xxl-modulaire"
+    "url": "/portfolio/modular-homes/apex/",
+    "slug_path": "modular-homes/apex"
   },
   {
-    "sku": "c-loft-360",
-    "name": "C loft-360",
+    "sku": "blocs",
+    "name": "Blocs",
     "tagline": "",
     "status": "draft",
-    "category": "pods",
+    "category": "modular-homes",
     "sub_category": "",
     "series": null,
     "occupants": "",
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/pods/c-loft-360/2.png",
+    "hero": "/wp-content/uploads/products/modular-homes/blocs/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/pods/c-loft-360/2.png",
+        "url": "/wp-content/uploads/products/modular-homes/blocs/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/c-loft-360/3.png",
+        "url": "/wp-content/uploads/products/modular-homes/blocs/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/c-loft-360/C loft-360.png",
+        "url": "/wp-content/uploads/products/modular-homes/blocs/Blocs.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/pods/c-loft-360/",
-    "slug_path": "pods/c-loft-360"
+    "url": "/portfolio/modular-homes/blocs/",
+    "slug_path": "modular-homes/blocs"
   },
   {
-    "sku": "d-loft-180",
-    "name": "D loft-180",
+    "sku": "pavillon",
+    "name": "Pavillon",
     "tagline": "",
     "status": "draft",
-    "category": "pods",
+    "category": "modular-homes",
     "sub_category": "",
     "series": null,
     "occupants": "",
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/pods/d-loft-180/2.png",
+    "hero": "/wp-content/uploads/products/modular-homes/pavillon/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/pods/d-loft-180/2.png",
+        "url": "/wp-content/uploads/products/modular-homes/pavillon/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/d-loft-180/3.png",
+        "url": "/wp-content/uploads/products/modular-homes/pavillon/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/d-loft-180/D loft-180.png",
+        "url": "/wp-content/uploads/products/modular-homes/pavillon/Pavillon de luxe 1.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/pods/d-loft-180/",
-    "slug_path": "pods/d-loft-180"
+    "url": "/portfolio/modular-homes/pavillon/",
+    "slug_path": "modular-homes/pavillon"
   },
   {
-    "sku": "double-pods-xl",
-    "name": "Double pods xl",
+    "sku": "hydra",
+    "name": "Hydra",
     "tagline": "",
     "status": "draft",
-    "category": "pods",
+    "category": "floating-homes",
     "sub_category": "",
     "series": null,
     "occupants": "",
     "floor_area_m2": null,
     "features": {},
     "certifications": [
-      "CSA",
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/pods/double-pods-xl/2.png",
+    "hero": "/wp-content/uploads/products/floating-homes/hydra/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/pods/double-pods-xl/2.png",
+        "url": "/wp-content/uploads/products/floating-homes/hydra/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/double-pods-xl/3.png",
+        "url": "/wp-content/uploads/products/floating-homes/hydra/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/double-pods-xl/4.png",
+        "url": "/wp-content/uploads/products/floating-homes/hydra/3.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/double-pods-xl/Double pods xl.png",
+        "url": "/wp-content/uploads/products/floating-homes/hydra/Hydra.png",
         "type": "image"
       }
     ],
-    "url": "/portfolio/pods/double-pods-xl/",
-    "slug_path": "pods/double-pods-xl"
-  },
-  {
-    "sku": "f-loft-1",
-    "name": "F loft-1",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/f-loft-1/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/f-loft-1/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/f-loft-1/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/f-loft-1/F loft-1.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/f-loft-1/",
-    "slug_path": "pods/f-loft-1"
-  },
-  {
-    "sku": "pod-expendable",
-    "name": "Pod Expendable",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/pod-expendable/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/pod-expendable/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/pod-expendable/Pod Expendable.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/pod-expendable/",
-    "slug_path": "pods/pod-expendable"
-  },
-  {
-    "sku": "serie-v",
-    "name": "Série V",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/serie-v/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/serie-v/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/serie-v/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/serie-v/Série V novatio.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/serie-v/",
-    "slug_path": "pods/serie-v"
-  },
-  {
-    "sku": "serie-x",
-    "name": "Série X",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/serie-x/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/serie-x/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/serie-x/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/serie-x/Série x novatio.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/serie-x/",
-    "slug_path": "pods/serie-x"
-  },
-  {
-    "sku": "signature-1",
-    "name": "Signature 1",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/signature-1/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/signature-1/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/signature-1/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/signature-1/S1 fiche novatio.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/signature-1/",
-    "slug_path": "pods/signature-1"
-  },
-  {
-    "sku": "signature-2",
-    "name": "Signature 2",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/signature-2/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/signature-2/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/signature-2/Petit pod novatio pub.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/signature-2/",
-    "slug_path": "pods/signature-2"
-  },
-  {
-    "sku": "signature-3",
-    "name": "Signature 3",
-    "tagline": "",
-    "status": "draft",
-    "category": "pods",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/pods/signature-3/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/pods/signature-3/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/signature-3/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/pods/signature-3/Fiche pub pod signature.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/pods/signature-3/",
-    "slug_path": "pods/signature-3"
-  },
-  {
-    "sku": "pavillon-h2",
-    "name": "Pavillon H2",
-    "tagline": "",
-    "status": "draft",
-    "category": "tiny-houses",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/tiny-houses/pavillon-h2/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/pavillon-h2/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/pavillon-h2/Pavillon nova 2.1.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/tiny-houses/pavillon-h2/",
-    "slug_path": "tiny-houses/pavillon-h2"
-  },
-  {
-    "sku": "pavillon-nova-2-0",
-    "name": "Pavillon nova 2.0",
-    "tagline": "",
-    "status": "draft",
-    "category": "tiny-houses",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/tiny-houses/pavillon-nova-2-0/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/pavillon-nova-2-0/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/pavillon-nova-2-0/Pavillon nova 2.0.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/tiny-houses/pavillon-nova-2-0/",
-    "slug_path": "tiny-houses/pavillon-nova-2-0"
-  },
-  {
-    "sku": "starry-b01",
-    "name": "Starry B01",
-    "tagline": "",
-    "status": "draft",
-    "category": "tiny-houses",
-    "sub_category": "",
-    "series": null,
-    "occupants": "",
-    "floor_area_m2": null,
-    "features": {},
-    "certifications": [
-      "CSA",
-      "Conçu au Québec"
-    ],
-    "hero": "/wp-content/uploads/products/tiny-houses/starry-b01/2.png",
-    "has_hero": true,
-    "slides": [
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/starry-b01/2.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/starry-b01/3.png",
-        "type": "image"
-      },
-      {
-        "url": "/wp-content/uploads/products/tiny-houses/starry-b01/Nova Dome-1.png",
-        "type": "image"
-      }
-    ],
-    "url": "/portfolio/tiny-houses/starry-b01/",
-    "slug_path": "tiny-houses/starry-b01"
+    "url": "/portfolio/floating-homes/hydra/",
+    "slug_path": "floating-homes/hydra"
   }
 ]

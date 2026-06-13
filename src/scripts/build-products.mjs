@@ -52,8 +52,8 @@ const SLIDE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg", ".pdf"]);
 
 /**
  * Scan an SKU folder and return slide files in the established order:
- *   2.png, 3.png, ... (numeric ascending, starting at 2 — 1.* is intentionally ignored)
- *   then any non-numeric files alphabetically.
+ *   1.png, 2.png, 3.png, ... (numeric ascending)
+ *   then any non-numeric files alphabetically (e.g. the combined spec sheet).
  * Used as the auto-fallback when spec.json doesn't pin a hero/gallery explicitly.
  */
 async function scanSkuSlides(skuDir) {
@@ -63,13 +63,8 @@ async function scanSkuSlides(skuDir) {
   const numeric = [], other = [];
   for (const f of files) {
     const m = f.match(/^(\d+)\.[^.]+$/);
-    if (m) {
-      const n = parseInt(m[1], 10);
-      if (n < 2) continue; // skip 1.png / 1.jpg / etc.
-      numeric.push([n, f]);
-    } else {
-      other.push(f);
-    }
+    if (m) numeric.push([parseInt(m[1], 10), f]);
+    else other.push(f);
   }
   numeric.sort((a, b) => a[0] - b[0]);
   other.sort();
@@ -293,12 +288,12 @@ async function main() {
     const skuDir = path.dirname(specPath);
     const onDisk = await scanSkuSlides(skuDir);
 
-    // Hero: spec.media.hero_image if set, otherwise "2.png" if present on disk.
-    // (1.png is intentionally ignored — convention starts at 2.png.)
+    // Hero: spec.media.hero_image if set, otherwise "1.png" if present on disk.
+    // (1.png is the cover render and serves as the listing thumbnail.)
     // No fallback — if neither is set, the listing hides the card by default.
     let resolvedHeroFile = spec?.media?.hero_image;
-    if (!resolvedHeroFile && onDisk.includes("2.png")) {
-      resolvedHeroFile = "2.png";
+    if (!resolvedHeroFile && onDisk.includes("1.png")) {
+      resolvedHeroFile = "1.png";
     }
     let hasRealHero = false;
     if (resolvedHeroFile) {
@@ -360,12 +355,21 @@ async function main() {
     if (hasRealHero) listedCount++; else hiddenCount++;
   }
 
-  // Sort for deterministic output.
-  flatIndex.sort((a, b) =>
-    (a.category + a.sub_category + (a.series ?? "") + a.sku).localeCompare(
+  // Sort for deterministic output. Categories follow a fixed display order
+  // (pods on top); anything unlisted falls back to alphabetical after them.
+  // Keep CATEGORY_ORDER in sync with portfolio/index.html.
+  const CATEGORY_ORDER = ["pods", "modular-homes", "floating-homes"];
+  const catRank = (c) => {
+    const i = CATEGORY_ORDER.indexOf(c);
+    return i === -1 ? CATEGORY_ORDER.length : i;
+  };
+  flatIndex.sort((a, b) => {
+    const ra = catRank(a.category), rb = catRank(b.category);
+    if (ra !== rb) return ra - rb;
+    return (a.category + a.sub_category + (a.series ?? "") + a.sku).localeCompare(
       b.category + b.sub_category + (b.series ?? "") + b.sku,
-    ),
-  );
+    );
+  });
 
   await fs.writeFile(INDEX_OUT, JSON.stringify(flatIndex, null, 2) + "\n", "utf-8");
   console.log(`[build:products] indexed ${flatIndex.length} SKUs (${listedCount} with hero, ${hiddenCount} hidden by default)`);

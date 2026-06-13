@@ -625,8 +625,17 @@ var _wpUtilSettings = {"ajax":{"url":"/archcraft/wp-admin/admin-ajax.php"}};
             count.textContent = n + ' ' + word;
           }
 
+          /* Fixed category display order (pods on top); unlisted categories fall
+             back to alphabetical after them. Keep in sync with build-products.mjs. */
+          const CATEGORY_ORDER = ['pods', 'modular-homes', 'floating-homes'];
+          const catRank = (c) => {
+            const i = CATEGORY_ORDER.indexOf(c);
+            return i === -1 ? CATEGORY_ORDER.length : i;
+          };
+
           function refreshCascade(allItems) {
-            const cats = [...new Set(allItems.map((p) => p.category).filter(Boolean))].sort();
+            const cats = [...new Set(allItems.map((p) => p.category).filter(Boolean))]
+              .sort((a, b) => (catRank(a) - catRank(b)) || a.localeCompare(b));
             renderOptions($cat, cats, $cat.value);
           }
 
