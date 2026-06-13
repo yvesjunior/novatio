@@ -1,6 +1,14 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { NextRequest } from "next/server";
+import {
+  sendViaSendgrid,
+  emailShell,
+  badgePill,
+  infoTable,
+  messageBlock,
+  listBlock,
+} from "../mailer";
 
 /**
  * Lead-qualification chatbot endpoint.
@@ -19,6 +27,14 @@ const LEADS_FILE = path.join(process.cwd(), "leads.json");
 
 type Tier = "HOT" | "WARM" | "COLD";
 
+interface QuestionAsked {
+  id?: string;
+  category?: string;
+  intent?: number;
+  text?: string;
+  ts?: string;
+}
+
 interface Lead {
   tier: Tier;
   answers: {
@@ -26,8 +42,9 @@ interface Lead {
     timeline?: string;
     property?: string;
     budget?: string;
-    contact?: { name?: string; email?: string; phone?: string };
+    contact?: { name?: string; email?: string; phone?: string; message?: string };
   };
+  questionsAsked?: QuestionAsked[];
   page?: string;
   referrer?: string | null;
   ts?: string;
@@ -93,6 +110,13 @@ function pretty(field: string, value?: string): string {
   return PRETTY[field]?.[value] ?? value;
 }
 
+/** The free-text questions the visitor asked the assistant, oldest first. */
+function questionLines(lead: Lead): string[] {
+  return (lead.questionsAsked ?? [])
+    .map((q) => (q.text ?? "").trim())
+    .filter(Boolean);
+}
+
 function summary(lead: Lead): string {
   const a = lead.answers;
   const c = a.contact ?? {};
@@ -105,8 +129,45 @@ function summary(lead: Lead): string {
     `*Timeline:* ${pretty("timeline", a.timeline)}`,
     `*Property:* ${pretty("property", a.property)}`,
     `*Budget:* ${pretty("budget", a.budget)}`,
+    c.message ? `*Message:* ${c.message}` : null,
   ].filter(Boolean);
+  const qs = questionLines(lead);
+  if (qs.length) {
+    lines.push(`*Questions asked (${qs.length}):*`);
+    qs.forEach((q) => lines.push(`  • ${q}`));
+  }
   return lines.join("\n");
+}
+
+function emailSubject(lead: Lead): string {
+  const a = lead.answers;
+  const c = a.contact ?? {};
+  return `[${lead.tier}] New lead: ${c.name ?? "anonymous"} — ${pretty("project", a.project)}`;
+}
+
+// Pill background per tier (text stays white).
+const TIER_BADGE_BG: Record<Tier, string> = { HOT: "#d2401e", WARM: "#CAA05C", COLD: "#7a8694" };
+
+/** Branded HTML body used by every email provider (Resend + SendGrid). */
+function emailHtml(lead: Lead): string {
+  const a = lead.answers;
+  const c = a.contact ?? {};
+  const badgeHtml = badgePill(`${TIER_EMOJI[lead.tier]} ${lead.tier} lead`, TIER_BADGE_BG[lead.tier]);
+  const body =
+    infoTable([
+      ["Name", c.name],
+      ["Email", c.email],
+      ["Phone", c.phone],
+      ["Project", pretty("project", a.project)],
+      ["Timeline", pretty("timeline", a.timeline)],
+      ["Property", pretty("property", a.property)],
+      ["Budget", pretty("budget", a.budget)],
+      ["Page", lead.page],
+    ]) +
+    (c.message ? messageBlock("Message from the visitor", c.message) : "") +
+    listBlock("Questions the visitor asked", questionLines(lead));
+  const title = `New ${lead.tier} lead${c.name ? ` — ${c.name}` : ""}`;
+  return emailShell({ badgeHtml, title, bodyHtml: body, ts: lead.ts });
 }
 
 /* ----------------------------- Notifications ---------------------------- */
@@ -134,24 +195,7 @@ async function notifySlack(lead: Lead, webhookUrl: string) {
 }
 
 async function notifyResend(lead: Lead, opts: { apiKey: string; from: string; to: string }) {
-  const a = lead.answers;
-  const c = a.contact ?? {};
-  const subject = `[${lead.tier}] New lead: ${c.name ?? "anonymous"} — ${pretty("project", a.project)}`;
-  const html = `
-    <h2 style="color:${TIER_COLOR[lead.tier]};">
-      ${TIER_EMOJI[lead.tier]} ${lead.tier} lead from ${lead.page ?? "?"}
-    </h2>
-    <table style="border-collapse:collapse;font-family:sans-serif;font-size:14px;">
-      <tr><td><b>Name</b></td><td>${escapeHtml(c.name ?? "—")}</td></tr>
-      <tr><td><b>Email</b></td><td>${escapeHtml(c.email ?? "—")}</td></tr>
-      ${c.phone ? `<tr><td><b>Phone</b></td><td>${escapeHtml(c.phone)}</td></tr>` : ""}
-      <tr><td><b>Project</b></td><td>${pretty("project", a.project)}</td></tr>
-      <tr><td><b>Timeline</b></td><td>${pretty("timeline", a.timeline)}</td></tr>
-      <tr><td><b>Property</b></td><td>${pretty("property", a.property)}</td></tr>
-      <tr><td><b>Budget</b></td><td>${pretty("budget", a.budget)}</td></tr>
-      <tr><td><b>Time</b></td><td>${lead.ts ?? ""}</td></tr>
-    </table>
-  `.trim();
+  const c = lead.answers.contact ?? {};
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -162,13 +206,24 @@ async function notifyResend(lead: Lead, opts: { apiKey: string; from: string; to
       from: opts.from,
       to: [opts.to],
       reply_to: c.email,
-      subject,
-      html,
+      subject: emailSubject(lead),
+      html: emailHtml(lead),
     }),
   });
   if (!r.ok) {
     throw new Error(`Resend ${r.status}: ${await r.text().catch(() => "")}`);
   }
+}
+
+async function notifySendgrid(lead: Lead, opts: { apiKey: string; from: string; to: string }) {
+  const c = lead.answers.contact ?? {};
+  await sendViaSendgrid(opts.apiKey, {
+    to: opts.to,
+    from: opts.from,
+    replyTo: c.email,
+    subject: emailSubject(lead),
+    html: emailHtml(lead),
+  });
 }
 
 async function notifyWebhook(lead: Lead, webhookUrl: string) {
@@ -180,15 +235,6 @@ async function notifyWebhook(lead: Lead, webhookUrl: string) {
   if (!r.ok) {
     throw new Error(`Webhook ${r.status}: ${await r.text().catch(() => "")}`);
   }
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 /**
@@ -204,6 +250,15 @@ async function notify(lead: Lead) {
       notifySlack(lead, env.LEAD_SLACK_WEBHOOK_URL).catch((err) =>
         console.warn("[lead] slack failed:", err.message),
       ),
+    );
+  }
+  if (env.LEAD_SENDGRID_API_KEY && env.LEAD_TO_EMAIL && env.LEAD_FROM_EMAIL) {
+    tasks.push(
+      notifySendgrid(lead, {
+        apiKey: env.LEAD_SENDGRID_API_KEY,
+        from: env.LEAD_FROM_EMAIL,
+        to: env.LEAD_TO_EMAIL,
+      }).catch((err) => console.warn("[lead] sendgrid failed:", err.message)),
     );
   }
   if (env.LEAD_RESEND_API_KEY && env.LEAD_TO_EMAIL && env.LEAD_FROM_EMAIL) {
@@ -225,7 +280,7 @@ async function notify(lead: Lead) {
 
   if (tasks.length === 0) {
     console.log(
-      "[lead] no notification channels configured (set LEAD_SLACK_WEBHOOK_URL / LEAD_RESEND_API_KEY+LEAD_TO_EMAIL+LEAD_FROM_EMAIL / LEAD_GENERIC_WEBHOOK_URL).",
+      "[lead] no notification channels configured (set LEAD_SLACK_WEBHOOK_URL / LEAD_SENDGRID_API_KEY+LEAD_TO_EMAIL+LEAD_FROM_EMAIL / LEAD_RESEND_API_KEY+LEAD_TO_EMAIL+LEAD_FROM_EMAIL / LEAD_GENERIC_WEBHOOK_URL).",
     );
     return;
   }
