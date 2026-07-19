@@ -3,7 +3,7 @@ import path from "node:path";
 import type { NextRequest } from "next/server";
 
 /**
- * Catch-all route handler that serves the existing static Novatio site
+ * Catch-all route handler that serves the existing static Maisonnovatio site
  * unmodified. Every URL is mapped to the corresponding `index.html` under
  * `static_site/archcraft/<slug>/index.html` and returned
  * verbatim. Visual output is identical to the legacy site because the markup

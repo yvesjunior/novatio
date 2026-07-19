@@ -93,7 +93,7 @@ export function emailShell(opts: {
     <tr><td align="center">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.06);">
         <tr><td style="background:${INK};padding:24px 32px;">
-          <span style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:2px;">MAISON&nbsp;NOVATIO</span><br>
+          <span style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:2px;">MAISONNOVATIO</span><br>
           <span style="color:${GOLD};font-size:11px;font-weight:600;letter-spacing:3px;">SOLUTIONS MODULAIRES</span>
         </td></tr>
         <tr><td style="height:4px;background:${GOLD};font-size:0;line-height:0;">&nbsp;</td></tr>
@@ -103,7 +103,7 @@ export function emailShell(opts: {
         </td></tr>
         <tr><td style="padding:8px 32px 30px;">${opts.bodyHtml}</td></tr>
         <tr><td style="background:#faf8f3;padding:18px 32px;border-top:1px solid #efe9df;">
-          <p style="margin:0;color:#9a9a9a;font-size:12px;line-height:1.55;">Sent automatically from the Maison&nbsp;Novatio website${opts.ts ? ` · ${escapeHtml(opts.ts)}` : ""}.<br>Reply to this email to respond directly to the visitor.</p>
+          <p style="margin:0;color:#9a9a9a;font-size:12px;line-height:1.55;">Sent automatically from the Maisonnovatio website${opts.ts ? ` · ${escapeHtml(opts.ts)}` : ""}.<br>Reply to this email to respond directly to the visitor.</p>
         </td></tr>
       </table>
     </td></tr>
@@ -115,7 +115,7 @@ export function emailShell(opts: {
 export async function sendViaSendgrid(apiKey: string, m: MailOpts): Promise<void> {
   const body = {
     personalizations: [{ to: [{ email: m.to }] }],
-    from: { email: m.from, name: m.fromName ?? "Maison Novatio" },
+    from: { email: m.from, name: m.fromName ?? "Maisonnovatio" },
     ...(m.replyTo ? { reply_to: { email: m.replyTo } } : {}),
     subject: m.subject,
     content: [{ type: "text/html", value: m.html }],

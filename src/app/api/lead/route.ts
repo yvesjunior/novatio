@@ -1,5 +1,3 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import type { NextRequest } from "next/server";
 import {
   sendViaSendgrid,
@@ -9,21 +7,21 @@ import {
   messageBlock,
   listBlock,
 } from "../mailer";
+import { getDb } from "../../../lib/db";
+import { leads as leadsTable } from "../../../lib/schema";
 
 /**
  * Lead-qualification chatbot endpoint.
  *
  * 1. Validates POST shape from `public/chatbot.js`.
- * 2. Appends to `leads.json` at the repo root (gitignored).
+ * 2. Inserts into the `leads` Postgres table (best-effort).
  * 3. Logs to server console.
  * 4. Notifies enabled channels (Slack / Resend email / generic webhook) —
  *    each is opt-in via env var. See `.env.example` for the full list.
  *
- * All notification failures are logged but never block the response —
- * the lead is always accepted with 200 once it's persisted.
+ * All persistence/notification failures are logged but never block the
+ * response — the lead is always accepted with 200.
  */
-
-const LEADS_FILE = path.join(process.cwd(), "leads.json");
 
 type Tier = "HOT" | "WARM" | "COLD";
 
@@ -59,18 +57,26 @@ function isLead(x: unknown): x is Lead {
   );
 }
 
-async function readLeads(): Promise<Lead[]> {
-  try {
-    const text = await fs.readFile(LEADS_FILE, "utf-8");
-    const parsed = JSON.parse(text);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeLeads(leads: Lead[]) {
-  await fs.writeFile(LEADS_FILE, JSON.stringify(leads, null, 2) + "\n");
+async function persist(lead: Lead) {
+  const c = lead.answers.contact ?? {};
+  await getDb()
+    .insert(leadsTable)
+    .values({
+      tier: lead.tier,
+      name: c.name,
+      email: c.email,
+      phone: c.phone,
+      message: c.message,
+      project: lead.answers.project,
+      timeline: lead.answers.timeline,
+      property: lead.answers.property,
+      budget: lead.answers.budget,
+      page: lead.page,
+      referrer: lead.referrer ?? null,
+      questionsAsked: lead.questionsAsked ?? null,
+      raw: lead,
+      createdAt: lead.ts ? new Date(lead.ts) : new Date(),
+    });
 }
 
 /* ------------------------------ Formatting ------------------------------ */
@@ -304,9 +310,7 @@ export async function POST(req: NextRequest) {
 
   // Persist (best-effort).
   try {
-    const all = await readLeads();
-    all.push(lead);
-    await writeLeads(all);
+    await persist(lead);
   } catch (err) {
     console.error("[lead] write failed:", err);
   }

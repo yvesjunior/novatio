@@ -24,4 +24,4 @@ docker compose up -d --build      # http://localhost:${WEB_PORT}/  (default 3001
 cd src && npm install && npm run dev
 ```
 
-For the visual-parity rule, architecture, what to edit/not edit, and per-task playbooks, see [`src/CLAUDE.md`](src/CLAUDE.md). For dev-facing onboarding, see [`src/README.md`](src/README.md).
+For the visual-parity rule, architecture, what to edit/not edit, and per-task playbooks, see [`src/CLAUDE.md`](src/CLAUDE.md). For dev-facing onboarding, see [`README.md`](README.md).

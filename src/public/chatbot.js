@@ -1,5 +1,5 @@
 /**
- * Novatio lead-qualification chatbot.
+ * Maisonnovatio lead-qualification chatbot.
  *
  * Self-contained vanilla JS widget — no React or other dependency.
  * Two modes that the visitor can move between:
@@ -24,7 +24,7 @@
   // `triggers` are lowercase substrings we look for in the user's text.
   // `intent` is a buyer-signal weight 0-3 (3 = strongly buyer-y).
   // Answers support **bold** and [text](/url).
-  // *** Replace the placeholder figures with real Novatio specs. ***
+  // *** Replace the placeholder figures with real Maisonnovatio specs. ***
   const FAQ = [
     {
       id: "pricing",
@@ -450,7 +450,7 @@
     const header = el("header", { class: "ac-header" }, [
       el("div", { class: "ac-avatar" }, "N"),
       el("div", {}, [
-        el("div", { class: "ac-title" }, "Novatio"),
+        el("div", { class: "ac-title" }, "Maisonnovatio"),
         el("div", { class: "ac-subtitle" }, "Project assistant"),
       ]),
       el("button", {

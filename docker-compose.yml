@@ -1,6 +1,25 @@
 name: nanopods-house
 
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: nanopods-house-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nanopods}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nanopods}
+      POSTGRES_DB: ${POSTGRES_DB:-nanopods}
+    ports:
+      # Exposed so host `npm run dev` can reach the containerized DB.
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nanopods} -d ${POSTGRES_DB:-nanopods}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
   web:
     build:
       context: .
@@ -8,9 +27,21 @@ services:
     image: nanopods-house-web:latest
     container_name: nanopods-house-web
     env_file: .env
+    environment:
+      # Always target the `db` service over the compose network. NOT derived from
+      # the host DATABASE_URL in .env (that one points at the published host port
+      # for `npm run dev` and would be wrong inside the container).
+      DATABASE_URL: postgres://${POSTGRES_USER:-nanopods}:${POSTGRES_PASSWORD:-nanopods}@db:5432/${POSTGRES_DB:-nanopods}
     ports:
       - "${WEB_PORT:-3000}:3000"
     volumes:
       - ./src/static_site:/app/static_site
       - ./src/i18n:/app/i18n
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
+
+volumes:
+  pgdata:

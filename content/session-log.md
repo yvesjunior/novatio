@@ -32,7 +32,7 @@ Removed: "Get in Touch!" sub-heading, "Partners Program" link. "Our Blog" relabe
 ### Site-wide contact info (live everywhere)
 - Phone: **+1 (819) 448-4524** (bold, wrapped in `<strong>`)
 - Hours: Lundi–Vendredi, 8h–18h (rendered at `font-size: 0.7em; opacity: 0.7`)
-- Email: `renaud.theroux@overseaimportexports.com`
+- Email: `info@maisonnovatio.ca`
 - Address: Nicolet, Québec, Canada
 - Map link: `https://maps.app.goo.gl/...` (footer)
 

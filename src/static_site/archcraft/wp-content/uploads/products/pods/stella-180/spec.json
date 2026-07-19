@@ -1,7 +1,7 @@
 {
   "sku": "stella-180",
   "name": "Stella 180",
-  "status": "draft",
+  "status": "published",
   "taxonomy": {
     "category": "pods"
   },
@@ -25,8 +25,11 @@
   },
   "logistics": {},
   "media": {
-    "hero_image": "",
-    "gallery": [],
+    "hero_image": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/1.png",
+    "gallery": [
+      "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/2.png",
+      "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/Loft_180.png"
+    ],
     "floor_plan": "",
     "three_d_model": ""
   },

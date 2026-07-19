@@ -1,7 +1,7 @@
 {
   "sku": "pavillon",
   "name": "Pavillon",
-  "status": "draft",
+  "status": "published",
   "taxonomy": {
     "category": "modular-homes"
   },
@@ -25,8 +25,11 @@
   },
   "logistics": {},
   "media": {
-    "hero_image": "",
-    "gallery": [],
+    "hero_image": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/1.png",
+    "gallery": [
+      "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/2.png",
+      "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/Pavillon_de_luxe_1.png"
+    ],
     "floor_plan": "",
     "three_d_model": ""
   },

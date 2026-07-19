@@ -1,5 +1,3 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import type { NextRequest } from "next/server";
 import {
   sendViaSendgrid,
@@ -9,19 +7,19 @@ import {
   infoTable,
   messageBlock,
 } from "../mailer";
+import { getDb } from "../../../lib/db";
+import { contacts } from "../../../lib/schema";
 
 /**
  * Contact-form endpoint (used by /contact-us/).
  *
  * 1. Validates the POST shape {name, email, message}.
- * 2. Appends to `contacts.json` at the repo root (gitignored, best-effort).
+ * 2. Inserts into the `contacts` Postgres table (best-effort).
  * 3. Emails the message via SendGrid to LEAD_TO_EMAIL (reply-to = visitor).
  *
- * Email failures are logged but never block the 200 — the message is always
- * persisted so nothing is lost even if the mail provider is down.
+ * Email/DB failures are logged but never block the 200 — the response is always
+ * a success so a submission is never rejected because a downstream is down.
  */
-
-const CONTACTS_FILE = path.join(process.cwd(), "contacts.json");
 
 interface ContactMsg {
   name: string;
@@ -46,16 +44,13 @@ function isContact(x: unknown): x is ContactMsg {
 
 async function persist(msg: ContactMsg) {
   try {
-    let all: ContactMsg[] = [];
-    try {
-      const text = await fs.readFile(CONTACTS_FILE, "utf-8");
-      const parsed = JSON.parse(text);
-      if (Array.isArray(parsed)) all = parsed;
-    } catch {
-      /* no file yet */
-    }
-    all.push(msg);
-    await fs.writeFile(CONTACTS_FILE, JSON.stringify(all, null, 2) + "\n");
+    await getDb().insert(contacts).values({
+      name: msg.name,
+      email: msg.email,
+      message: msg.message,
+      page: msg.page,
+      createdAt: msg.ts ? new Date(msg.ts) : new Date(),
+    });
   } catch (err) {
     console.error("[contact] write failed:", err);
   }

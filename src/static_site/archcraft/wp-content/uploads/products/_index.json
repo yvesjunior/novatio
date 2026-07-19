@@ -3,7 +3,7 @@
     "sku": "aura",
     "name": "Aura",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "pods",
     "sub_category": "",
     "series": null,
@@ -13,19 +13,19 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/pods/aura/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/aura/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/pods/aura/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/aura/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/aura/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/aura/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/aura/Aura pods.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/aura/Aura_pods.png",
         "type": "image"
       }
     ],
@@ -36,7 +36,7 @@
     "sku": "stella-180",
     "name": "Stella 180",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "pods",
     "sub_category": "",
     "series": null,
@@ -46,19 +46,19 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/pods/stella-180/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/pods/stella-180/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/stella-180/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/stella-180/Loft 180.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/stella-180/Loft_180.png",
         "type": "image"
       }
     ],
@@ -69,7 +69,7 @@
     "sku": "vitra-360",
     "name": "Vitra 360",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "pods",
     "sub_category": "",
     "series": null,
@@ -79,19 +79,19 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/pods/vitra-360/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/vitra-360/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/pods/vitra-360/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/vitra-360/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/vitra-360/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/vitra-360/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/pods/vitra-360/Loft 360.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/vitra-360/Loft_360.png",
         "type": "image"
       }
     ],
@@ -102,7 +102,7 @@
     "sku": "apex",
     "name": "Apex",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "modular-homes",
     "sub_category": "",
     "series": null,
@@ -112,19 +112,19 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/modular-homes/apex/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/apex/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/modular-homes/apex/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/apex/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/apex/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/apex/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/apex/Apex.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/apex/Apex.png",
         "type": "image"
       }
     ],
@@ -135,7 +135,7 @@
     "sku": "blocs",
     "name": "Blocs",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "modular-homes",
     "sub_category": "",
     "series": null,
@@ -145,19 +145,19 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/modular-homes/blocs/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/blocs/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/modular-homes/blocs/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/blocs/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/blocs/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/blocs/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/blocs/Blocs.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/blocs/Blocs.png",
         "type": "image"
       }
     ],
@@ -168,7 +168,7 @@
     "sku": "pavillon",
     "name": "Pavillon",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "modular-homes",
     "sub_category": "",
     "series": null,
@@ -178,19 +178,19 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/modular-homes/pavillon/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/modular-homes/pavillon/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/pavillon/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/modular-homes/pavillon/Pavillon de luxe 1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/pavillon/Pavillon_de_luxe_1.png",
         "type": "image"
       }
     ],
@@ -201,7 +201,7 @@
     "sku": "hydra",
     "name": "Hydra",
     "tagline": "",
-    "status": "draft",
+    "status": "published",
     "category": "floating-homes",
     "sub_category": "",
     "series": null,
@@ -211,23 +211,23 @@
     "certifications": [
       "Conçu au Québec"
     ],
-    "hero": "/wp-content/uploads/products/floating-homes/hydra/1.png",
+    "hero": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/hydra/1.png",
     "has_hero": true,
     "slides": [
       {
-        "url": "/wp-content/uploads/products/floating-homes/hydra/1.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/hydra/1.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/floating-homes/hydra/2.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/hydra/2.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/floating-homes/hydra/3.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/hydra/3.png",
         "type": "image"
       },
       {
-        "url": "/wp-content/uploads/products/floating-homes/hydra/Hydra.png",
+        "url": "https://ik.imagekit.io/kiwanoinc/maisonnovatio/portfolio/hydra/Hydra.png",
         "type": "image"
       }
     ],

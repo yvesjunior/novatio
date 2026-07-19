@@ -1,1 +1,9 @@
 .claude/
+.env
+.env.local
+.env.*.local
+
+# built image artifacts (transferred to the VM, never committed)
+*.tar.gz
+/data/
+src/data/
