@@ -33,10 +33,17 @@ The Next.js app's "project root" is `src/` — `package.json`, `node_modules/`, 
 ├── infra/web/Dockerfile       multi-stage Node 22 alpine build
 └── src/                       app root
     ├── app/
-    │   ├── [[...slug]]/route.ts    ← the only "real" code: catch-all GET/POST handler
-    │   ├── api/lead/route.ts       ← lead-qualification POST endpoint
+    │   ├── [[...slug]]/route.ts    ← catch-all GET/POST handler (serves HTML, applies FR i18n + SEO)
+    │   ├── admin/                  ← admin dashboard UI (gated by middleware.ts)
+    │   ├── api/admin/              ← admin API (login, portfolio, categories, content, submissions, upload, account)
+    │   ├── api/lead/route.ts       ← lead-qualification POST endpoint (persists to Postgres)
+    │   ├── api/contact/route.ts    ← contact-form endpoint (Postgres)
+    │   ├── api/newsletter/route.ts ← newsletter subscribe (Postgres)
     │   ├── layout.tsx              ← minimal <html><body> wrapper
     │   └── globals.css             ← single @import "tailwindcss"
+    ├── middleware.ts               ← gates /admin + /api/admin behind a signed session cookie
+    ├── lib/                        ← auth, admin-auth, db (Drizzle), schema, imagekit, portfolio, categories, content
+    ├── drizzle/                    ← generated SQL migrations (applied on container boot)
     ├── scripts/
     │   └── build-partials.mjs      ← stamps partials into HTML at build time
     ├── public/
@@ -63,6 +70,35 @@ The Next.js app's "project root" is `src/` — `package.json`, `node_modules/`, 
 3. Everything else hits `[[...slug]]/route.ts` which reads `static_site/archcraft/about-us/index.html` and returns it verbatim.
 4. The handler also stubs three legacy XHR endpoints (CF7 schema, woosw AJAX, an Elementor bundle) to silence dead-plugin 404s.
 5. Header / footer markup is already inlined into the HTML by `scripts/build-partials.mjs` (runs on `predev` / `prebuild`).
+
+---
+
+## Admin dashboard & data layer
+
+A password-protected dashboard at **`/admin`** (added on top of the static site) manages content.
+`middleware.ts` gates `/admin` + `/api/admin` behind a signed session cookie; login uses
+`ADMIN_USERNAME` / `ADMIN_PASSWORD` (+ `ADMIN_SESSION_SECRET`). Sections:
+
+- **Portfolio** — CRUD for models. Images upload to **ImageKit** (`lib/imagekit.ts`), URLs stored in
+  each item's `spec.json`; `lib/products-build.mjs` builds `_index.json` for the public grid. Removed
+  images are deleted from the CDN.
+- **Categories** — CRUD, single source of truth `wp-content/uploads/products/_categories.json`
+  (`lib/categories.ts`), consumed by validation, the build, the admin form, and the public
+  `/portfolio/` filter (the four old hardcoded copies were collapsed into this file).
+- **Pages** — per-page **bilingual** content editor (`lib/content.ts`, `app/api/admin/content`).
+  **English** edits are applied surgically to the page HTML by `data-i18n` key (same locate logic as
+  `applyTranslations`); **French** writes `i18n/fr.json`. Pixel-safe — only the edited text changes.
+- **Leads / Contacts / Newsletter** — read-only tables of the Postgres submissions + CSV export.
+- **Settings** — change the admin password (HMAC override in `data/admin-auth.json`; falls back to env).
+
+**Data:** form submissions persist to **Postgres** via **Drizzle** (`lib/db.ts`, `lib/schema.ts`).
+Migrations in `drizzle/` run automatically on boot (`infra/web/entrypoint.sh`). Dev compose runs a
+containerized `postgres:16`; **production uses the host's Postgres** (no db container — see the README
+Deploy section). Portfolio items are files (`spec.json`), not DB rows.
+
+> `applyTranslations` (in `route.ts`) runs **only for non-English** locales; English is served from
+> the raw HTML. That's why the Pages editor edits English *in the HTML* rather than `en.json` —
+> enabling the dict for English was tried and reverted (it drifted ~100 keys, changing rendering).
 
 ---
 
@@ -189,7 +225,7 @@ If your task involves adding back any of:
 
 A floating chat widget on every page. Source of truth:
 - [`public/chatbot.js`](public/chatbot.js) — vanilla JS widget, scripted Q&A, classifier
-- [`src/app/api/lead/route.ts`](src/app/api/lead/route.ts) — POST endpoint, persists to `leads.json`, fans out to enabled notification channels
+- [`src/app/api/lead/route.ts`](src/app/api/lead/route.ts) — POST endpoint, persists to Postgres (`leads` table), fans out to enabled notification channels
 - [`scripts/build-partials.mjs`](scripts/build-partials.mjs) — injects `<script src="/chatbot.js" defer>` into every HTML page (idempotent, wrapped in `<!-- inject:chatbot -->...<!-- /inject:chatbot -->` markers)
 
 To add a new question, edit the `FLOW` array in `chatbot.js`. To change classification rules, edit the `classify()` function. To add a notification channel (Slack, Resend, generic webhook are already there), copy one of the existing `notifyX` functions in `route.ts`.
@@ -213,7 +249,7 @@ If you see new 404 noise in the browser console, check whether more endpoints ne
 ## Known intentional gaps
 
 - WooCommerce pages render demo content but **no backend** (no real cart persistence, payment, etc.).
-- Newsletter and contact forms POST to `#` — the visual is preserved but submissions go nowhere.
+- Contact form + footer newsletter are **wired** now (→ `/api/contact` and `/api/newsletter` → Postgres; leads also email). No outbound mailing-list integration yet — export subscribers from the admin.
 - `Squada One` font is referenced in legacy CSS but never loaded — falls back to Albert Sans (matches demo behavior).
 - A few WordPress assets were missing on the demo we scraped from too; those are stripped (no visible breakage).
 

@@ -2,50 +2,38 @@ name: nanopods-house
 
 # Production compose: runs a prebuilt image (built off-box, transferred via
 # `docker save`/`docker load`). No build step, no source mounts — static_site
-# and i18n are baked into the image. The VM only needs:
+# and i18n are baked into the image.
+#
+# Postgres is NOT run here — production uses the Postgres already installed on the
+# host. Point DATABASE_URL (in .env) at it. From inside the container the host is
+# reachable as `host.docker.internal` (mapped to the host gateway below), e.g.:
+#   DATABASE_URL=postgres://<user>:<pass>@host.docker.internal:5432/<db>
+# (Ensure that host Postgres listens on the docker bridge / accepts the container
+# in pg_hba.conf. Alternatively use the host's LAN IP.)
+#
+# The VM only needs:
 #   - this file
-#   - a .env with WEB_PORT + LEAD_* + POSTGRES_*/DATABASE_URL vars
+#   - a .env with WEB_PORT + LEAD_* + ADMIN_* + IMAGEKIT_* + DATABASE_URL
 #   - the loaded app image (nanopods-house-web:latest)
-#   - outbound net to pull postgres:16-alpine (or pre-load it too)
+#
+# The entrypoint runs `db-migrate` on boot (idempotent) against DATABASE_URL, so
+# the host DB is migrated automatically on first start.
 #
 # Run:  docker compose -f docker-compose.prod.yml up -d
 
 services:
-  db:
-    image: postgres:16-alpine
-    container_name: nanopods-house-db
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-nanopods}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nanopods}
-      POSTGRES_DB: ${POSTGRES_DB:-nanopods}
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nanopods} -d ${POSTGRES_DB:-nanopods}"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
-
   web:
     image: nanopods-house-web:latest
     container_name: nanopods-house-web
     env_file: .env
-    environment:
-      # Always target the `db` service over the compose network. NOT derived from
-      # the host DATABASE_URL in .env (that one points at the published host port
-      # for `npm run dev` and would be wrong inside the container).
-      DATABASE_URL: postgres://${POSTGRES_USER:-nanopods}:${POSTGRES_PASSWORD:-nanopods}@db:5432/${POSTGRES_DB:-nanopods}
+    # DATABASE_URL comes straight from .env (env_file) — it must point at the host
+    # Postgres. Not overridden here.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "${WEB_PORT:-3000}:3000"
     volumes:
       # Legacy JSON backups (and anything else under /app/data) persist here.
-      # Submissions now live in Postgres (pgdata volume below).
+      # Submissions now live in the host Postgres.
       - ./data:/app/data
-    depends_on:
-      db:
-        condition: service_healthy
     restart: unless-stopped
-
-volumes:
-  pgdata:

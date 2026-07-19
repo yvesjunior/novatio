@@ -65,3 +65,32 @@ Removed: "Get in Touch!" sub-heading, "Partners Program" link. "Our Blog" relabe
 - Editing **`route.ts`** or anything outside `static_site/` requires `docker compose up -d --build` to take effect (only `static_site/` is volume-mounted).
 - The catch-all handler returns 9-byte plain "Not Found" for unknown paths. The custom 404 design is at `/error-404/` and is also served at `/404` via middleware.
 - Dead WordPress tooling endpoints are stubbed in `route.ts` (CF7 schema, woosw AJAX, shared-frontend-handlers JS). Any new console 404 noise → check whether more stubs are needed.
+
+## 2026-07-16 → 2026-07-19
+
+Built the **admin dashboard + content-management platform** on top of the static site (committed `7554a1f`). See [`README.md`](../README.md) § Admin dashboard / Database / Deploy and [`src/CLAUDE.md`](../src/CLAUDE.md) § Admin dashboard & data layer for the durable docs.
+
+### Added
+- **`/admin` dashboard** — username + password login (`ADMIN_USERNAME`/`ADMIN_PASSWORD` + `ADMIN_SESSION_SECRET`), signed-cookie auth via `middleware.ts`, shared sidebar navbar. Sections: Dashboard, Portfolio, Pages, Categories, Leads, Contacts, Newsletter, Settings.
+- **Portfolio manager** — add / edit / delete models; images upload to **ImageKit** (`maisonnovatio/portfolio/<sku>/`), CDN cleanup on remove. Edit lives at `/admin/portfolio/[sku]`.
+- **Dynamic categories** — single source of truth `products/_categories.json` (`lib/categories.ts`); collapsed the 4 old hardcoded copies (portfolio.ts, products-build.mjs, admin form, public filter).
+- **Pages content editor** — per-page bilingual (EN/FR). **English edits apply surgically to the page HTML by `data-i18n` key; French → `i18n/fr.json`.** Pixel-safe.
+- **Postgres persistence** — leads/contacts/newsletter moved from flat JSON → Postgres (Drizzle, `lib/schema.ts`); migrations run on boot (`infra/web/entrypoint.sh`). Newsletter form wired (`/api/newsletter`).
+- **Settings** — change admin password (HMAC override in `data/admin-auth.json`).
+
+### Migrations / cleanups
+- Migrated the 7 products' images to ImageKit and **deleted the 22 local copies**; specs now hold CDN URLs.
+- Set all 7 portfolio items `status: published` (were `draft` from the import).
+- **Trimmed whitespace inside all `data-i18n` inner text** (231 elements, 13 files) so English matches French's clean form — verified pixel-identical; **refreshed the visual baselines** (resolves the long-standing stale-baseline item).
+
+### Key decision (don't relitigate)
+- Tried enabling `applyTranslations` for **English** so `en.json` could drive it — reverted: `en.json` drifts from the English HTML in ~100 keys (nav/button markup, a changed title), which would visibly alter the live English site. English stays served from raw HTML; the Pages editor edits it in place.
+
+### Deploy change
+- **Production uses the host's Postgres, not a container.** `docker-compose.prod.yml` has no `db` service; maps `host.docker.internal` → host gateway. Prod `.env` `DATABASE_URL` must use `host.docker.internal` (not `localhost`). Dev compose still runs a containerized `postgres:16`.
+
+### Still open
+- Site-wide chrome (nav / footer / **contact info**) is NOT in the Pages editor yet — it lives in shared partials + the home embedded header (needs re-stamp handling). Deferred.
+- Dynamic portfolio content is **single-language** (`spec.json` has one name/tagline/description) — not bilingual. Would need bilingual spec fields + locale-aware client render.
+- SEO meta titles/descriptions not in the Pages editor.
+- `.env` `ADMIN_PASSWORD` is still the placeholder `novatio-admin-2026` on this machine — change in prod.
