@@ -158,9 +158,9 @@ docker compose down               # default http://localhost:3001
 ```
 `static_site/` and `i18n/` are volume-mounted, so base-content edits are live (i18n JSON edits need `docker compose restart web` — dicts are cached). The dev compose also runs a containerized `postgres:16`.
 
-### Production — GCP VM, built from source, host Postgres
+### Production — built from source, host Postgres
 
-The production box is a GCP Compute Engine VM behind a host **reverse proxy** (Nginx on 80/443).
+The production box is a Linux VM behind a host **reverse proxy** (Nginx on 80/443).
 Production **builds the image from the git code on the VM** (no shipped image) and uses the VM's
 **host Postgres** (no DB container). It runs [`docker-compose.prod.yml`](docker-compose.prod.yml),
 which has a `build:` from source and maps `host.docker.internal` → the host gateway so the container
