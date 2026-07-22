@@ -1,4 +1,14 @@
-import { pgTable, serial, text, varchar, timestamp, jsonb, uniqueIndex } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  serial,
+  text,
+  varchar,
+  integer,
+  timestamp,
+  jsonb,
+  uniqueIndex,
+  index,
+} from "drizzle-orm/pg-core";
 
 /**
  * Postgres schema for form/lead submissions (previously flat JSON files).
@@ -46,3 +56,43 @@ export const newsletterSubscribers = pgTable(
   },
   (t) => [uniqueIndex("newsletter_email_lower_idx").on(t.emailLower)],
 );
+
+/**
+ * Site content, moved off flat files so the admin dashboard can edit it in
+ * production (persists + live, no rebuild). Seeded once from the JSON files.
+ */
+
+// Portfolio taxonomy — single source of truth (was products/_categories.json).
+export const categories = pgTable("categories", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 80 }).notNull().unique(),
+  label: text("label").notNull(),
+  position: integer("position").notNull().default(0), // display order
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Portfolio items (was products/<cat>/<sku>/spec.json). `spec` holds the full
+// spec object as JSONB; scalar columns mirror the queryable/sortable fields.
+export const products = pgTable(
+  "products",
+  {
+    id: serial("id").primaryKey(),
+    sku: varchar("sku", { length: 120 }).notNull().unique(),
+    category: varchar("category", { length: 80 }).notNull(),
+    status: varchar("status", { length: 16 }).notNull().default("published"),
+    name: text("name").notNull(),
+    spec: jsonb("spec").notNull(),
+    position: integer("position").notNull().default(0),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("products_category_idx").on(t.category), index("products_status_idx").on(t.status)],
+);
+
+// Sparse per-key content overrides applied at serve time on top of the base
+// HTML (English) / i18n/fr.json (French). Only holds keys an admin has edited.
+export const pageContent = pgTable("page_content", {
+  key: text("key").primaryKey(),
+  en: text("en"),
+  fr: text("fr"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});

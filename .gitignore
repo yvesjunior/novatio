@@ -7,3 +7,7 @@
 *.tar.gz
 /data/
 src/data/
+
+# DB data dumps (migrate-db.sh / manual exports) — never commit
+/nanopods-*.sql
+/nanopods-*.dump

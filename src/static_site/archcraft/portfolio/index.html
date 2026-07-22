@@ -631,7 +631,7 @@ var _wpUtilSettings = {"ajax":{"url":"/archcraft/wp-admin/admin-ajax.php"}};
             renderOptions($cat, cats, $cat.value);
           }
 
-          fetch('/wp-content/uploads/products/_categories.json', { cache: 'no-store' })
+          fetch('/api/categories', { cache: 'no-store' })
             .then((r) => (r.ok ? r.json() : []))
             .catch(() => [])
             .then((cats) => {
@@ -641,7 +641,7 @@ var _wpUtilSettings = {"ajax":{"url":"/archcraft/wp-admin/admin-ajax.php"}};
                 CATEGORY_LABELS = Object.fromEntries(valid.map((c) => [c.slug, c.label || titleCase(c.slug)]));
               }
             })
-            .then(() => fetch('/wp-content/uploads/products/_index.json', { cache: 'no-store' }))
+            .then(() => fetch('/api/portfolio', { cache: 'no-store' }))
             .then((r) => r.json())
             .then((items) => {
               const update = (resetPage = true) => {

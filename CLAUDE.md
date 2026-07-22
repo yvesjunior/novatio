@@ -36,13 +36,15 @@ The Next.js app's "project root" is `src/` — `package.json`, `node_modules/`, 
     │   ├── [[...slug]]/route.ts    ← catch-all GET/POST handler (serves HTML, applies FR i18n + SEO)
     │   ├── admin/                  ← admin dashboard UI (gated by middleware.ts)
     │   ├── api/admin/              ← admin API (login, portfolio, categories, content, submissions, upload, account)
+    │   ├── api/portfolio/route.ts  ← public: portfolio index from the DB (drives /portfolio/ grid)
+    │   ├── api/categories/route.ts ← public: category list from the DB (drives the filter)
     │   ├── api/lead/route.ts       ← lead-qualification POST endpoint (persists to Postgres)
     │   ├── api/contact/route.ts    ← contact-form endpoint (Postgres)
     │   ├── api/newsletter/route.ts ← newsletter subscribe (Postgres)
     │   ├── layout.tsx              ← minimal <html><body> wrapper
     │   └── globals.css             ← single @import "tailwindcss"
     ├── middleware.ts               ← gates /admin + /api/admin behind a signed session cookie
-    ├── lib/                        ← auth, admin-auth, db (Drizzle), schema, imagekit, portfolio, categories, content
+    ├── lib/                        ← auth, admin-auth, db (Drizzle), schema, imagekit, products, categories, content
     ├── drizzle/                    ← generated SQL migrations (applied on container boot)
     ├── scripts/
     │   └── build-partials.mjs      ← stamps partials into HTML at build time
@@ -79,26 +81,31 @@ A password-protected dashboard at **`/admin`** (added on top of the static site)
 `middleware.ts` gates `/admin` + `/api/admin` behind a signed session cookie; login uses
 `ADMIN_USERNAME` / `ADMIN_PASSWORD` (+ `ADMIN_SESSION_SECRET`). Sections:
 
-- **Portfolio** — CRUD for models. Images upload to **ImageKit** (`lib/imagekit.ts`), URLs stored in
-  each item's `spec.json`; `lib/products-build.mjs` builds `_index.json` for the public grid. Removed
-  images are deleted from the CDN.
-- **Categories** — CRUD, single source of truth `wp-content/uploads/products/_categories.json`
-  (`lib/categories.ts`), consumed by validation, the build, the admin form, and the public
-  `/portfolio/` filter (the four old hardcoded copies were collapsed into this file).
+**Content lives in Postgres** (moved off files so it's editable in prod with no rebuild). Sections:
+
+- **Portfolio** — CRUD for models in the **`products`** table (`lib/products.ts`; full spec in a
+  JSONB column). Public grid reads `/api/portfolio`. Images upload to **ImageKit** (`lib/imagekit.ts`),
+  URLs stored in the row's `spec.media`; removed images are deleted from the CDN.
+- **Categories** — CRUD in the **`categories`** table (`lib/categories.ts`), consumed by validation,
+  the admin form, and the public `/portfolio/` filter (`/api/categories`).
 - **Pages** — per-page **bilingual** content editor (`lib/content.ts`, `app/api/admin/content`).
-  **English** edits are applied surgically to the page HTML by `data-i18n` key (same locate logic as
-  `applyTranslations`); **French** writes `i18n/fr.json`. Pixel-safe — only the edited text changes.
+  Edits are stored as a **sparse overlay** in the **`page_content`** table (`{key, en, fr}`) and
+  applied at serve time in `route.ts` on top of the base (English = HTML, French = `i18n/fr.json`).
+  Pixel-safe — only the edited key changes; the overlay is empty until someone edits.
 - **Leads / Contacts / Newsletter** — read-only tables of the Postgres submissions + CSV export.
 - **Settings** — change the admin password (HMAC override in `data/admin-auth.json`; falls back to env).
 
-**Data:** form submissions persist to **Postgres** via **Drizzle** (`lib/db.ts`, `lib/schema.ts`).
+**Data:** submissions **and content** persist to **Postgres** via **Drizzle** (`lib/db.ts`,
+`lib/schema.ts` → `leads`/`contacts`/`newsletter_subscribers` + `products`/`categories`/`page_content`).
 Migrations in `drizzle/` run automatically on boot (`infra/web/entrypoint.sh`). Dev compose runs a
-containerized `postgres:16`; **production uses the host's Postgres** (no db container — see the README
-Deploy section). Portfolio items are files (`spec.json`), not DB rows.
+containerized `postgres:16`; **production builds from source + uses the host's Postgres** (no db
+container — see the README Deploy section). Seed content from the repo files with `npm run db:seed`;
+the `spec.json` / `_index.json` / `_categories.json` files remain only as that seed source.
 
-> `applyTranslations` (in `route.ts`) runs **only for non-English** locales; English is served from
-> the raw HTML. That's why the Pages editor edits English *in the HTML* rather than `en.json` —
-> enabling the dict for English was tried and reverted (it drifted ~100 keys, changing rendering).
+> **Serve-time content overlay** (`route.ts`): the base is English inline in the HTML + French in
+> `i18n/fr.json`; the `page_content` DB overlay is layered on top per `data-i18n` key. English only
+> gets `applyTranslations` when an override exists (sparse), so un-edited English stays byte-identical
+> to the raw HTML — this is why applying the *full* `en.json` was reverted (it drifted ~100 keys).
 
 ---
 

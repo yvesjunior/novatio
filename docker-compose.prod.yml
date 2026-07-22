@@ -1,39 +1,43 @@
 name: nanopods-house
 
-# Production compose: runs a prebuilt image (built off-box, transferred via
-# `docker save`/`docker load`). No build step, no source mounts — static_site
-# and i18n are baked into the image.
+# Production compose: BUILDS THE IMAGE FROM THE GIT CODE on the host (git pull →
+# docker compose build). No prebuilt image is shipped. `static_site` and `i18n`
+# are baked into the image at build time (base content); editable content lives
+# in Postgres and is served dynamically, so content changes DON'T need a rebuild.
 #
 # Postgres is NOT run here — production uses the Postgres already installed on the
 # host. Point DATABASE_URL (in .env) at it. From inside the container the host is
 # reachable as `host.docker.internal` (mapped to the host gateway below), e.g.:
 #   DATABASE_URL=postgres://<user>:<pass>@host.docker.internal:5432/<db>
-# (Ensure that host Postgres listens on the docker bridge / accepts the container
+# (Ensure the host Postgres listens on the docker bridge / accepts the container
 # in pg_hba.conf. Alternatively use the host's LAN IP.)
 #
-# The VM only needs:
-#   - this file
+# The VM needs, in the project dir:
+#   - this file + the git checkout (source)
 #   - a .env with WEB_PORT + LEAD_* + ADMIN_* + IMAGEKIT_* + DATABASE_URL
-#   - the loaded app image (nanopods-house-web:latest)
 #
-# The entrypoint runs `db-migrate` on boot (idempotent) against DATABASE_URL, so
-# the host DB is migrated automatically on first start.
+# The entrypoint runs `db-migrate` on boot (idempotent) against DATABASE_URL.
+# First-time content: seed the host DB (`npm run db:seed`) or import a dev dump
+# (see migrate-db.sh / README).
 #
-# Run:  docker compose -f docker-compose.prod.yml up -d
+# Run:  docker compose -f docker-compose.prod.yml up -d --build
+# Update code: git pull && docker compose -f docker-compose.prod.yml up -d --build
 
 services:
   web:
+    build:
+      context: .
+      dockerfile: infra/web/Dockerfile
     image: nanopods-house-web:latest
     container_name: nanopods-house-web
     env_file: .env
     # DATABASE_URL comes straight from .env (env_file) — it must point at the host
-    # Postgres. Not overridden here.
+    # Postgres (host.docker.internal, not localhost). Not overridden here.
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
       - "${WEB_PORT:-3000}:3000"
     volumes:
-      # Legacy JSON backups (and anything else under /app/data) persist here.
-      # Submissions now live in the host Postgres.
+      # Legacy JSON backups persist here. Submissions + content live in Postgres.
       - ./data:/app/data
     restart: unless-stopped

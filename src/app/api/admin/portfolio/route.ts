@@ -1,21 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { buildProducts } from "../../../../lib/products-build.mjs";
-import {
-  readIndex,
-  skuDir,
-  slugify,
-  uniqueSku,
-  type Category,
-} from "../../../../lib/portfolio";
 import { isValidCategorySlug, readCategories } from "../../../../lib/categories";
+import { slugify } from "../../../../lib/portfolio";
+import { insertProduct, listProducts, uniqueSku } from "../../../../lib/products";
 
 export const runtime = "nodejs";
 
-/** GET /api/admin/portfolio — list all portfolio items from _index.json. */
+/** GET /api/admin/portfolio — list all portfolio items (from the DB). */
 export async function GET() {
-  const items = await readIndex();
+  const items = await listProducts();
   return NextResponse.json({ ok: true, items });
 }
 
@@ -53,7 +45,7 @@ function asStringList(v: unknown): string[] {
   return out;
 }
 
-/** POST /api/admin/portfolio — create a new item (writes spec.json, rebuilds index). */
+/** POST /api/admin/portfolio — create a new item (inserts a products row). */
 export async function POST(req: NextRequest) {
   let body: CreateBody;
   try {
@@ -73,18 +65,15 @@ export async function POST(req: NextRequest) {
   }
 
   const hero = asString(body.hero);
-  const gallery = Array.isArray(body.gallery)
-    ? body.gallery.map(asString).filter(Boolean)
-    : [];
+  const gallery = Array.isArray(body.gallery) ? body.gallery.map(asString).filter(Boolean) : [];
   const status = asString(body.status) === "draft" ? "draft" : "published";
-
   const certifications = asStringList(body.certifications);
 
   const base = slugify(name);
   if (!base) {
     return NextResponse.json({ ok: false, error: "name_required" }, { status: 400 });
   }
-  const sku = await uniqueSku(category as Category, base);
+  const sku = await uniqueSku(base);
 
   const spec = {
     sku,
@@ -102,26 +91,18 @@ export async function POST(req: NextRequest) {
     use_cases: [] as string[],
     pricing: { display: "On request", notes: "" },
     logistics: {},
-    media: {
-      hero_image: hero,
-      gallery,
-      floor_plan: "",
-      three_d_model: "",
-    },
+    media: { hero_image: hero, gallery, floor_plan: "", three_d_model: "" },
     source: { notes: "Created via admin dashboard" },
   };
 
-  const dir = skuDir(category as Category, sku);
   try {
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(path.join(dir, "spec.json"), JSON.stringify(spec, null, 2) + "\n", "utf-8");
-    await buildProducts();
+    await insertProduct({ sku, category: category as string, status, name, spec });
   } catch (err) {
     console.error("[admin/portfolio] create failed:", err);
     return NextResponse.json({ ok: false, error: "write_failed" }, { status: 500 });
   }
 
-  const items = await readIndex();
+  const items = await listProducts();
   const created = items.find((i) => i.sku === sku) ?? null;
   console.log(`[admin/portfolio] created ${category}/${sku}`);
   return NextResponse.json({ ok: true, sku, item: created }, { status: 201 });

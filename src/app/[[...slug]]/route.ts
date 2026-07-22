@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { NextRequest } from "next/server";
+import { loadPageOverrides } from "../../lib/content";
 
 /**
  * Catch-all route handler that serves the existing static Maisonnovatio site
@@ -301,9 +302,15 @@ export async function GET(
 
   if (ext === ".html") {
     let body = await fs.readFile(file, "utf-8");
-    const dicts = await loadDicts();
-    if (locale !== "en") {
-      body = applyTranslations(body, dicts[locale] ?? {}, locale);
+    const [dicts, overrides] = await Promise.all([loadDicts(), loadPageOverrides()]);
+    // Base content: English = raw HTML, French = i18n/fr.json. Admin edits are
+    // sparse DB overrides applied on top (page_content table). English is only
+    // touched when an override exists, so un-edited text stays byte-identical.
+    if (locale === "en") {
+      if (Object.keys(overrides.en).length > 0) body = applyTranslations(body, overrides.en, "en");
+    } else {
+      const frDict = { ...(dicts[locale] ?? {}), ...overrides.fr };
+      body = applyTranslations(body, frDict, locale);
     }
     body = injectSeoTags(body, req, cleanedSlug, dicts[locale] ?? {});
     return new Response(body, { headers: { "content-type": contentType } });

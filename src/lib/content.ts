@@ -1,20 +1,17 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { getDb } from "./db";
+import { pageContent } from "./schema";
 
 /**
- * Page content editor backend.
+ * Page content editor backend (DB-overlay model).
  *
- * English content lives inline in the routable page HTML files (elements tagged
- * `data-i18n="key"`); French lives in i18n/fr.json (applied at serve time). This
- * module edits both:
- *   - English  → surgically replace the tagged element's inner text in the page
- *     HTML file(s) (same locate logic the serve handler uses), touching only the
- *     edited field.
- *   - French   → write i18n/fr.json.
- *
- * Only visible page-body copy is exposed — shared chrome (nav/header/footer),
- * meta, and product-detail labels are excluded. All paths resolve from cwd
- * (`src/` in dev, `/app` in the container), both on the mounted static_site/i18n.
+ * BASE content ships with the code: English lives inline in the page HTML
+ * (elements tagged `data-i18n="key"`); French lives in i18n/fr.json. The admin
+ * edits are stored as a SPARSE overlay in the `page_content` table ({key, en, fr})
+ * and applied at serve time on top of the base (see app/[[...slug]]/route.ts).
+ * So edits persist + go live in prod with no rebuild, and un-edited text is
+ * untouched (pixel-safe).
  */
 
 const ROOT = path.join(process.cwd(), "static_site", "archcraft");
@@ -26,7 +23,7 @@ export interface PageDef {
   file: string;
 }
 
-/** Routable pages whose HTML holds English body copy. */
+/** Routable pages whose HTML holds the base English copy. */
 export const PAGES: PageDef[] = [
   { id: "home", label: "Home", file: "home/index.html" },
   { id: "about", label: "About", file: "about-us/index.html" },
@@ -39,10 +36,7 @@ export const PAGES: PageDef[] = [
   { id: "error_404", label: "404 Page", file: "error-404/index.html" },
 ];
 
-// Prefixes NOT exposed (shared chrome, SEO meta, product-detail labels).
 const EXCLUDED_PREFIXES = ["nav.", "footer.", "header.", "common.", "meta.", "pdp."];
-
-// Which tab a key belongs to, by its leading segment.
 const TAB_OF_PREFIX: Record<string, string> = {
   home: "home",
   about: "about",
@@ -57,18 +51,15 @@ const TAB_OF_PREFIX: Record<string, string> = {
 
 function tabForKey(key: string): string | null {
   if (EXCLUDED_PREFIXES.some((p) => key.startsWith(p))) return null;
-  const seg = key.split(".")[0];
-  return TAB_OF_PREFIX[seg] ?? null;
+  return TAB_OF_PREFIX[key.split(".")[0]] ?? null;
 }
 
-/** Human label for a field, derived from the key (drop tab prefix, title-case). */
 function fieldLabel(key: string): string {
-  const parts = key.split(".").slice(1); // drop the page segment
+  const parts = key.split(".").slice(1);
   const text = (parts.length ? parts : key.split(".")).join(" ").replace(/_/g, " ");
   return text.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** Find the index of the matching closing tag for `tagName`, from `from`, with depth counting. */
 function findMatchingClose(html: string, from: number, tagName: string): number {
   const openRe = new RegExp(`<${tagName}\\b`, "gi");
   const closeRe = new RegExp(`</${tagName}\\s*>`, "gi");
@@ -94,7 +85,6 @@ function findMatchingClose(html: string, from: number, tagName: string): number 
 
 const openTagRe = () => /<([A-Za-z][A-Za-z0-9]*)\b[^>]*\sdata-i18n="([^"]+)"[^>]*>/g;
 
-/** Extract the inner content of the first inner-text `data-i18n="key"` element, or null. */
 function extractInner(html: string, key: string): string | null {
   const re = openTagRe();
   let m: RegExpExecArray | null;
@@ -110,36 +100,36 @@ function extractInner(html: string, key: string): string | null {
   return null;
 }
 
-/** Replace the inner of every inner-text `data-i18n="key"` element with `value`. Returns [html, count]. */
-function replaceInner(html: string, key: string, value: string): [string, number] {
-  const re = openTagRe();
-  const out: string[] = [];
-  let last = 0;
-  let count = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(html)) !== null) {
-    if (m[2] !== key) continue;
-    const openTag = m[0];
-    if (/\sdata-i18n-attr=/.test(openTag) || openTag.endsWith("/>")) continue;
-    const openEnd = m.index + openTag.length;
-    const closeStart = findMatchingClose(html, openEnd, m[1]);
-    if (closeStart < 0) continue;
-    out.push(html.substring(last, openEnd));
-    out.push(value);
-    last = closeStart;
-    count++;
-    re.lastIndex = closeStart;
-  }
-  out.push(html.substring(last));
-  return [out.join(""), count];
-}
-
 async function readFr(): Promise<Record<string, string>> {
   try {
     return JSON.parse(await fs.readFile(FR_PATH, "utf-8"));
   } catch {
     return {};
   }
+}
+
+/** All DB overrides split by locale — used at serve time. Cached in production. */
+let _overrides: { en: Record<string, string>; fr: Record<string, string> } | null = null;
+export async function loadPageOverrides(): Promise<{ en: Record<string, string>; fr: Record<string, string> }> {
+  if (_overrides && process.env.NODE_ENV === "production") return _overrides;
+  const en: Record<string, string> = {};
+  const fr: Record<string, string> = {};
+  try {
+    const rows = await getDb().select().from(pageContent);
+    for (const r of rows) {
+      if (r.en != null) en[r.key] = r.en;
+      if (r.fr != null) fr[r.key] = r.fr;
+    }
+  } catch (err) {
+    console.error("[content] loadPageOverrides failed:", err);
+  }
+  _overrides = { en, fr };
+  return _overrides;
+}
+
+/** Drop the cache after an admin write so the next request reflects the edit. */
+export function invalidatePageOverrides(): void {
+  _overrides = null;
 }
 
 export interface ContentField {
@@ -149,18 +139,16 @@ export interface ContentField {
   fr: string;
   hasMarkup: boolean;
 }
-
 export interface ContentTab {
   id: string;
   label: string;
   fields: ContentField[];
 }
 
-/** Build the tabbed content model: for each editable data-i18n key, its EN (from HTML) + FR (from fr.json). */
+/** Editor model: base (HTML EN + fr.json FR) with DB overrides applied, grouped into page tabs. */
 export async function getGroupedContent(): Promise<ContentTab[]> {
-  const fr = await readFr();
-  // key -> { en, tab }  (en taken from the first routable file that carries the key)
-  const found = new Map<string, { en: string; tab: string }>();
+  const [fr, overrides] = await Promise.all([readFr(), loadPageOverrides()]);
+  const base = new Map<string, { en: string; tab: string }>();
 
   for (const page of PAGES) {
     let html: string;
@@ -174,22 +162,18 @@ export async function getGroupedContent(): Promise<ContentTab[]> {
     while ((m = re.exec(html)) !== null) {
       const key = m[2];
       const tab = tabForKey(key);
-      if (!tab || found.has(key)) continue;
+      if (!tab || base.has(key)) continue;
       if (/\sdata-i18n-attr=/.test(m[0]) || m[0].endsWith("/>")) continue;
       const inner = extractInner(html, key);
       if (inner == null) continue;
-      found.set(key, { en: inner, tab });
+      base.set(key, { en: inner, tab });
     }
   }
 
   const byTab = new Map<string, ContentField[]>();
-  for (const [key, { en, tab }] of found) {
-    // The English value is the raw HTML inner, which carries the file's pretty-print
-    // indentation (newlines + spaces around the text). Trim it for a clean editor
-    // display — pixel-safe, since HTML collapses that surrounding whitespace anyway
-    // and untouched fields are never rewritten.
-    const enVal = en.trim();
-    const frVal = (fr[key] ?? "").trim();
+  for (const [key, { en, tab }] of base) {
+    const enVal = (overrides.en[key] ?? en).trim();
+    const frVal = (overrides.fr[key] ?? fr[key] ?? "").trim();
     const field: ContentField = {
       key,
       label: fieldLabel(key),
@@ -201,14 +185,13 @@ export async function getGroupedContent(): Promise<ContentTab[]> {
     byTab.get(tab)!.push(field);
   }
 
-  const tabOrder = PAGES.map((p) => p.id);
   const labelOf = Object.fromEntries(PAGES.map((p) => [p.id, p.label]));
   const tabs: ContentTab[] = [];
-  for (const id of tabOrder) {
-    const fields = byTab.get(id);
+  for (const p of PAGES) {
+    const fields = byTab.get(p.id);
     if (fields && fields.length) {
       fields.sort((a, b) => a.key.localeCompare(b.key));
-      tabs.push({ id, label: labelOf[id], fields });
+      tabs.push({ id: p.id, label: labelOf[p.id], fields });
     }
   }
   return tabs;
@@ -220,42 +203,25 @@ export interface ContentUpdate {
   fr?: string;
 }
 
-/** Apply updates: EN → all routable HTML files carrying the key; FR → fr.json. Returns the refreshed model. */
+/** Persist edits as sparse DB overrides (upsert per key). Returns the refreshed model. */
 export async function updateEntries(updates: ContentUpdate[]): Promise<ContentTab[]> {
-  const validUpdates = updates.filter((u) => u && typeof u.key === "string" && tabForKey(u.key));
-
-  // English edits — batch per file so each file is written at most once.
-  const cache = new Map<string, { html: string; dirty: boolean }>();
-  for (const page of PAGES) {
-    try {
-      cache.set(page.file, { html: await fs.readFile(path.join(ROOT, page.file), "utf-8"), dirty: false });
-    } catch {
-      /* skip missing */
+  const db = getDb();
+  type Insert = typeof pageContent.$inferInsert;
+  for (const u of updates) {
+    if (!u || typeof u.key !== "string" || !tabForKey(u.key)) continue;
+    const values: Insert = { key: u.key };
+    const set: Partial<Insert> = { updatedAt: new Date() };
+    if (typeof u.en === "string") {
+      values.en = u.en;
+      set.en = u.en;
     }
-  }
-  for (const u of validUpdates) {
-    if (typeof u.en !== "string") continue;
-    for (const entry of cache.values()) {
-      const [next, n] = replaceInner(entry.html, u.key, u.en);
-      if (n > 0 && next !== entry.html) {
-        entry.html = next;
-        entry.dirty = true;
-      }
+    if (typeof u.fr === "string") {
+      values.fr = u.fr;
+      set.fr = u.fr;
     }
+    if (!("en" in set) && !("fr" in set)) continue; // nothing to write
+    await db.insert(pageContent).values(values).onConflictDoUpdate({ target: pageContent.key, set });
   }
-  for (const [file, entry] of cache) {
-    if (entry.dirty) await fs.writeFile(path.join(ROOT, file), entry.html, "utf-8");
-  }
-
-  // French edits — update fr.json (only keys that already exist).
-  const frUpdates = validUpdates.filter((u) => typeof u.fr === "string");
-  if (frUpdates.length) {
-    const fr = await readFr();
-    for (const u of frUpdates) {
-      if (u.key in fr) fr[u.key] = u.fr as string;
-    }
-    await fs.writeFile(FR_PATH, JSON.stringify(fr, null, 2) + "\n", "utf-8");
-  }
-
+  invalidatePageOverrides();
   return getGroupedContent();
 }

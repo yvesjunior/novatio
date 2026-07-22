@@ -1,15 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { buildProducts } from "../../../../lib/products-build.mjs";
+import { sql } from "drizzle-orm";
 import { readCategories, writeCategories, type CategoryDef } from "../../../../lib/categories";
-import { readIndex, slugify } from "../../../../lib/portfolio";
+import { slugify } from "../../../../lib/portfolio";
+import { getDb } from "../../../../lib/db";
+import { products } from "../../../../lib/schema";
 
 export const runtime = "nodejs";
 
-/** Count portfolio items per category slug (from the generated index). */
+/** Count portfolio items per category slug (from the products table). */
 async function itemCounts(): Promise<Record<string, number>> {
-  const items = await readIndex();
+  const rows = await getDb()
+    .select({ category: products.category, n: sql<number>`count(*)::int` })
+    .from(products)
+    .groupBy(products.category);
   const counts: Record<string, number> = {};
-  for (const it of items) counts[it.category] = (counts[it.category] ?? 0) + 1;
+  for (const r of rows) counts[r.category] = r.n;
   return counts;
 }
 
@@ -38,7 +43,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "already_exists" }, { status: 409 });
   }
   const next = await writeCategories([...categories, { slug, label }]);
-  await buildProducts();
   return NextResponse.json({ ok: true, categories: next }, { status: 201 });
 }
 
@@ -84,7 +88,6 @@ export async function PUT(req: NextRequest) {
   }
 
   const saved = await writeCategories(next);
-  await buildProducts();
   return NextResponse.json({ ok: true, categories: saved });
 }
 
@@ -103,6 +106,5 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "in_use", count: used }, { status: 409 });
   }
   const next = await writeCategories(categories.filter((c) => c.slug !== slug));
-  await buildProducts();
   return NextResponse.json({ ok: true, categories: next });
 }
