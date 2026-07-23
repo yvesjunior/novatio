@@ -31,12 +31,13 @@ services:
     image: nanopods-house-web:latest
     container_name: nanopods-house-web
     env_file: .env
-    # DATABASE_URL comes straight from .env (env_file) — it must point at the host
-    # Postgres (host.docker.internal, not localhost). Not overridden here.
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    ports:
-      - "${WEB_PORT:-3000}:3000"
+    # This host's Postgres listens on localhost only, so we share the host network
+    # stack (matching the other apps on this box) and reach it at localhost:5432
+    # via DATABASE_URL in .env. With host networking there is NO port mapping — the
+    # app binds ${WEB_PORT} directly on the host, driven by PORT below.
+    network_mode: "host"
+    environment:
+      PORT: ${WEB_PORT:-3000}
     volumes:
       # Legacy JSON backups persist here. Submissions + content live in Postgres.
       - ./data:/app/data
